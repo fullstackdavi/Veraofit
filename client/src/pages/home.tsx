@@ -11,6 +11,12 @@ const CHALLENGE_DATA = [
   {
     day: 1,
     tip: "Beba pelo menos 2 litros de água ao longo do dia e caminhe por 30 minutos. A hidratação é essencial para o metabolismo e a caminhada ajuda a queimar calorias.",
+    exercise: {
+      name: "Caminhada Leve",
+      duration: "30 minutos",
+      description: "Caminhe em ritmo confortável, mantendo uma respiração constante.",
+      sets: []
+    },
     recipe: {
       name: "Salada de Quinoa com Legumes",
       ingredients: ["1 xícara de quinoa cozida", "1 tomate picado", "1 pepino picado", "1/2 cebola roxa", "Suco de 1 limão", "Azeite, sal e pimenta"],
@@ -20,6 +26,15 @@ const CHALLENGE_DATA = [
   {
     day: 2,
     tip: "Faça 20 minutos de exercícios aeróbicos pela manhã. O exercício matinal acelera o metabolismo para o resto do dia.",
+    exercise: {
+      name: "Exercícios Aeróbicos",
+      duration: "20 minutos",
+      description: "Polichinelos e corrida estacionária alternados.",
+      sets: [
+        { exercise: "Polichinelos", reps: "3x30 segundos" },
+        { exercise: "Corrida estacionária", reps: "3x1 minuto" }
+      ]
+    },
     recipe: {
       name: "Omelete de Claras com Espinafre",
       ingredients: ["4 claras de ovo", "1 xícara de espinafre", "1/2 tomate picado", "Sal e pimenta"],
@@ -29,6 +44,12 @@ const CHALLENGE_DATA = [
   {
     day: 3,
     tip: "Evite açúcar refinado hoje. Substitua por frutas frescas quando sentir vontade de doce.",
+    exercise: {
+      name: "Alongamento Matinal",
+      duration: "15 minutos",
+      description: "Alongue todo o corpo de forma suave.",
+      sets: []
+    },
     recipe: {
       name: "Smoothie Verde Detox",
       ingredients: ["1 banana", "1 xícara de espinafre", "1/2 maçã verde", "200ml de água de coco", "Gelo"],
@@ -38,6 +59,16 @@ const CHALLENGE_DATA = [
   {
     day: 4,
     tip: "Faça 30 agachamentos e 20 flexões. Exercícios de força ajudam a tonificar e queimar gordura.",
+    exercise: {
+      name: "Treino de Força Básico",
+      duration: "25 minutos",
+      description: "Exercícios para fortalecer e tonificar o corpo.",
+      sets: [
+        { exercise: "Agachamentos", reps: "3x10" },
+        { exercise: "Flexões (pode ser de joelhos)", reps: "3x8" },
+        { exercise: "Prancha", reps: "3x20 segundos" }
+      ]
+    },
     recipe: {
       name: "Frango Grelhado com Brócolis",
       ingredients: ["1 peito de frango", "2 xícaras de brócolis", "Alho, limão e azeite"],
@@ -47,6 +78,12 @@ const CHALLENGE_DATA = [
   {
     day: 5,
     tip: "Pratique 15 minutos de meditação ou yoga. O controle do estresse ajuda na perda de peso.",
+    exercise: {
+      name: "Yoga para Iniciantes",
+      duration: "15 minutos",
+      description: "Sequência básica de yoga para relaxamento e alongamento.",
+      sets: []
+    },
     recipe: {
       name: "Bowl de Açaí Light",
       ingredients: ["1 pack de açaí sem açúcar", "1/2 banana", "Granola integral", "Morangos"],
@@ -56,6 +93,12 @@ const CHALLENGE_DATA = [
   {
     day: 6,
     tip: "Caminhe 10.000 passos hoje. Use um aplicativo contador de passos para monitorar.",
+    exercise: {
+      name: "Caminhada Ativa",
+      duration: "45 minutos",
+      description: "Caminhe em ritmo acelerado para atingir 10.000 passos.",
+      sets: []
+    },
     recipe: {
       name: "Sopa de Legumes",
       ingredients: ["2 cenouras", "1 abobrinha", "1 cebola", "2 tomates", "Caldo de legumes", "Temperos"],
@@ -65,6 +108,12 @@ const CHALLENGE_DATA = [
   {
     day: 7,
     tip: "Dia de descanso ativo! Faça alongamentos suaves e descanse bem para recuperação muscular.",
+    exercise: {
+      name: "Descanso Ativo",
+      duration: "20 minutos",
+      description: "Alongamento suave e respiração profunda.",
+      sets: []
+    },
     recipe: {
       name: "Wrap Integral de Atum",
       ingredients: ["1 tortilha integral", "1 lata de atum", "Alface", "Tomate", "Cenoura ralada"],
@@ -74,6 +123,15 @@ const CHALLENGE_DATA = [
   {
     day: 8,
     tip: "Elimine refrigerantes e bebidas açucaradas. Beba água com limão ou chás naturais.",
+    exercise: {
+      name: "Cardio Intervalado",
+      duration: "25 minutos",
+      description: "Alterne entre alta e baixa intensidade.",
+      sets: [
+        { exercise: "Corrida estacionária rápida", reps: "5x1 minuto" },
+        { exercise: "Caminhada leve", reps: "5x2 minutos" }
+      ]
+    },
     recipe: {
       name: "Tapioca com Queijo Cottage",
       ingredients: ["3 colheres de goma de tapioca", "2 colheres de queijo cottage", "Tomate cereja", "Manjericão"],
@@ -83,6 +141,16 @@ const CHALLENGE_DATA = [
   {
     day: 9,
     tip: "Faça 25 abdominais e 30 segundos de prancha. Fortaleça o core!",
+    exercise: {
+      name: "Treino de Core",
+      duration: "20 minutos",
+      description: "Fortaleça o abdômen e a região central do corpo.",
+      sets: [
+        { exercise: "Abdominais", reps: "3x15" },
+        { exercise: "Prancha", reps: "3x30 segundos" },
+        { exercise: "Prancha lateral", reps: "3x20 segundos cada lado" }
+      ]
+    },
     recipe: {
       name: "Salada Caprese Light",
       ingredients: ["Tomates", "Mussarela de búfala light", "Manjericão fresco", "Azeite e vinagre balsâmico"],
@@ -92,6 +160,12 @@ const CHALLENGE_DATA = [
   {
     day: 10,
     tip: "Aumente a intensidade! 40 minutos de cardio moderado hoje.",
+    exercise: {
+      name: "Cardio Moderado",
+      duration: "40 minutos",
+      description: "Corrida leve ou bicicleta em ritmo constante.",
+      sets: []
+    },
     recipe: {
       name: "Peixe Assado com Legumes",
       ingredients: ["1 filé de peixe branco", "Abobrinha", "Cenoura", "Pimentão", "Limão e ervas"],
@@ -101,6 +175,12 @@ const CHALLENGE_DATA = [
   {
     day: 11,
     tip: "Mastigue devagar e saboreie cada refeição. Isso ajuda na digestão e saciedade.",
+    exercise: {
+      name: "Pilates Básico",
+      duration: "30 minutos",
+      description: "Exercícios de pilates para fortalecer e alongar.",
+      sets: []
+    },
     recipe: {
       name: "Panqueca de Banana e Aveia",
       ingredients: ["1 banana", "2 ovos", "3 colheres de aveia", "Canela"],
@@ -110,6 +190,12 @@ const CHALLENGE_DATA = [
   {
     day: 12,
     tip: "Durma pelo menos 7-8 horas. O sono adequado é crucial para a perda de peso.",
+    exercise: {
+      name: "Treino Leve de Recuperação",
+      duration: "20 minutos",
+      description: "Alongamento e respiração para promover o relaxamento.",
+      sets: []
+    },
     recipe: {
       name: "Risoto de Cogumelos Light",
       ingredients: ["Arroz integral", "Cogumelos variados", "Cebola", "Caldo de legumes", "Queijo parmesão light"],
@@ -119,6 +205,15 @@ const CHALLENGE_DATA = [
   {
     day: 13,
     tip: "Faça treino intervalado: 1 min intenso, 2 min leve, repita 10x.",
+    exercise: {
+      name: "HIIT Intervalado",
+      duration: "30 minutos",
+      description: "Alterne entre alta e baixa intensidade.",
+      sets: [
+        { exercise: "Burpees", reps: "10x1 minuto" },
+        { exercise: "Caminhada leve", reps: "10x2 minutos" }
+      ]
+    },
     recipe: {
       name: "Salada de Grão-de-Bico",
       ingredients: ["1 lata de grão-de-bico", "Pepino", "Tomate", "Cebola roxa", "Salsinha", "Limão"],
@@ -128,6 +223,17 @@ const CHALLENGE_DATA = [
   {
     day: 14,
     tip: "Avalie seu progresso! Tire fotos e anote suas medidas. Metade do caminho!",
+    exercise: {
+      name: "Treino Completo",
+      duration: "35 minutos",
+      description: "Combine cardio e força para avaliar seu progresso.",
+      sets: [
+        { exercise: "Agachamentos", reps: "3x15" },
+        { exercise: "Flexões", reps: "3x12" },
+        { exercise: "Polichinelos", reps: "3x30" },
+        { exercise: "Prancha", reps: "3x40 segundos" }
+      ]
+    },
     recipe: {
       name: "Bowl de Iogurte Grego",
       ingredients: ["200g iogurte grego natural", "Frutas vermelhas", "Granola", "Mel", "Chia"],
@@ -137,6 +243,16 @@ const CHALLENGE_DATA = [
   {
     day: 15,
     tip: "Aumente a ingestão de proteínas. Elas mantêm a saciedade por mais tempo.",
+    exercise: {
+      name: "Treino de Pernas",
+      duration: "30 minutos",
+      description: "Foque em fortalecer as pernas e glúteos.",
+      sets: [
+        { exercise: "Agachamentos", reps: "4x12" },
+        { exercise: "Avanços", reps: "3x10 cada perna" },
+        { exercise: "Elevação de panturrilha", reps: "3x15" }
+      ]
+    },
     recipe: {
       name: "Hambúrguer de Frango Caseiro",
       ingredients: ["500g peito de frango moído", "1 ovo", "Aveia", "Alho e cebola", "Temperos"],
@@ -146,6 +262,12 @@ const CHALLENGE_DATA = [
   {
     day: 16,
     tip: "Faça uma aula online de dança ou zumba. Exercício divertido queima mais calorias!",
+    exercise: {
+      name: "Dança Fitness",
+      duration: "40 minutos",
+      description: "Dance livremente ao som de músicas animadas.",
+      sets: []
+    },
     recipe: {
       name: "Ceviche de Peixe",
       ingredients: ["400g peixe branco em cubos", "Suco de 3 limões", "Cebola roxa", "Coentro", "Pimenta"],
@@ -155,6 +277,12 @@ const CHALLENGE_DATA = [
   {
     day: 17,
     tip: "Evite comer 3 horas antes de dormir. Isso melhora a digestão e o sono.",
+    exercise: {
+      name: "Yoga Noturno",
+      duration: "20 minutos",
+      description: "Posturas relaxantes para melhorar o sono.",
+      sets: []
+    },
     recipe: {
       name: "Espaguete de Abobrinha",
       ingredients: ["2 abobrinhas grandes", "Molho de tomate caseiro", "Manjericão", "Alho"],
@@ -164,6 +292,16 @@ const CHALLENGE_DATA = [
   {
     day: 18,
     tip: "Faça 50 polichinelos e 30 mountain climbers. Aumente a intensidade!",
+    exercise: {
+      name: "Treino Cardio Intenso",
+      duration: "30 minutos",
+      description: "Exercícios de alta intensidade.",
+      sets: [
+        { exercise: "Polichinelos", reps: "5x50" },
+        { exercise: "Mountain climbers", reps: "5x30" },
+        { exercise: "Burpees", reps: "3x10" }
+      ]
+    },
     recipe: {
       name: "Tofu Grelhado com Gergelim",
       ingredients: ["200g tofu firme", "Molho shoyu", "Gergelim", "Gengibre", "Alho"],
@@ -173,6 +311,12 @@ const CHALLENGE_DATA = [
   {
     day: 19,
     tip: "Beba chá verde ou chá branco. Eles aceleram o metabolismo naturalmente.",
+    exercise: {
+      name: "Caminhada Energética",
+      duration: "35 minutos",
+      description: "Caminhe em ritmo acelerado ao ar livre.",
+      sets: []
+    },
     recipe: {
       name: "Bruschetta de Tomate",
       ingredients: ["Pão integral", "Tomates", "Manjericão", "Alho", "Azeite"],
@@ -182,6 +326,12 @@ const CHALLENGE_DATA = [
   {
     day: 20,
     tip: "Faça uma caminhada de 45 minutos ao ar livre. Aproveite a natureza!",
+    exercise: {
+      name: "Caminhada na Natureza",
+      duration: "45 minutos",
+      description: "Aproveite o ar livre e conecte-se com a natureza.",
+      sets: []
+    },
     recipe: {
       name: "Curry de Lentilha",
       ingredients: ["1 xícara de lentilha", "Leite de coco light", "Curry em pó", "Cebola", "Tomate"],
@@ -191,6 +341,17 @@ const CHALLENGE_DATA = [
   {
     day: 21,
     tip: "Três semanas completas! Continue firme. O resultado já é visível!",
+    exercise: {
+      name: "Treino Celebração",
+      duration: "40 minutos",
+      description: "Circuito completo para celebrar sua jornada.",
+      sets: [
+        { exercise: "Agachamentos", reps: "3x20" },
+        { exercise: "Flexões", reps: "3x15" },
+        { exercise: "Abdominais", reps: "3x20" },
+        { exercise: "Prancha", reps: "3x45 segundos" }
+      ]
+    },
     recipe: {
       name: "Salada Caesar Light",
       ingredients: ["Alface romana", "Frango grelhado", "Croutons integrais", "Molho caesar light", "Parmesão"],
@@ -200,6 +361,16 @@ const CHALLENGE_DATA = [
   {
     day: 22,
     tip: "Faça agachamentos com salto - 3 séries de 15. Queime gordura e ganhe massa!",
+    exercise: {
+      name: "Treino Pliométrico",
+      duration: "30 minutos",
+      description: "Exercícios explosivos para queimar gordura.",
+      sets: [
+        { exercise: "Agachamentos com salto", reps: "3x15" },
+        { exercise: "Avanços com salto", reps: "3x10 cada perna" },
+        { exercise: "Burpees", reps: "3x12" }
+      ]
+    },
     recipe: {
       name: "Berinjela Recheada",
       ingredients: ["2 berinjelas", "Carne moída magra", "Tomate", "Cebola", "Queijo light"],
@@ -209,6 +380,12 @@ const CHALLENGE_DATA = [
   {
     day: 23,
     tip: "Hidrate-se! Beba 3 litros de água hoje e observe a diferença.",
+    exercise: {
+      name: "Natação ou Hidroginástica",
+      duration: "45 minutos",
+      description: "Exercícios aquáticos de baixo impacto.",
+      sets: []
+    },
     recipe: {
       name: "Tabule de Quinoa",
       ingredients: ["Quinoa cozida", "Tomate", "Pepino", "Hortelã", "Salsinha", "Limão"],
@@ -218,6 +395,12 @@ const CHALLENGE_DATA = [
   {
     day: 24,
     tip: "Pratique gratidão. Liste 5 coisas boas sobre sua jornada até aqui.",
+    exercise: {
+      name: "Meditação e Alongamento",
+      duration: "25 minutos",
+      description: "Exercícios para mente e corpo.",
+      sets: []
+    },
     recipe: {
       name: "Moqueca Light de Peixe",
       ingredients: ["Peixe", "Tomate", "Pimentão", "Cebola", "Leite de coco light", "Coentro"],
@@ -227,6 +410,17 @@ const CHALLENGE_DATA = [
   {
     day: 25,
     tip: "Faça burpees - 3 séries de 10. Exercício completo para todo o corpo!",
+    exercise: {
+      name: "Treino Full Body",
+      duration: "35 minutos",
+      description: "Treino completo de corpo inteiro.",
+      sets: [
+        { exercise: "Burpees", reps: "3x10" },
+        { exercise: "Agachamentos", reps: "3x15" },
+        { exercise: "Flexões", reps: "3x12" },
+        { exercise: "Mountain climbers", reps: "3x20" }
+      ]
+    },
     recipe: {
       name: "Wrap de Alface com Peru",
       ingredients: ["Folhas de alface grandes", "Peito de peru", "Cenoura ralada", "Abacate", "Mostarda"],
@@ -236,6 +430,16 @@ const CHALLENGE_DATA = [
   {
     day: 26,
     tip: "Reduza o sal. Use ervas e especiarias para dar sabor às refeições.",
+    exercise: {
+      name: "Treino de Braços",
+      duration: "30 minutos",
+      description: "Fortaleça e tonifique os braços.",
+      sets: [
+        { exercise: "Flexões", reps: "4x12" },
+        { exercise: "Tríceps no banco", reps: "3x15" },
+        { exercise: "Rosca direta", reps: "3x12" }
+      ]
+    },
     recipe: {
       name: "Stir-Fry de Vegetais",
       ingredients: ["Brócolis", "Cenoura", "Pimentão", "Cogumelos", "Molho shoyu", "Gengibre"],
@@ -245,6 +449,15 @@ const CHALLENGE_DATA = [
   {
     day: 27,
     tip: "Reta final! Faça 60 minutos de atividade física hoje. Você consegue!",
+    exercise: {
+      name: "Desafio 60 Minutos",
+      duration: "60 minutos",
+      description: "Combine cardio e força para o desafio final.",
+      sets: [
+        { exercise: "Corrida/caminhada", reps: "30 minutos" },
+        { exercise: "Circuito de força", reps: "30 minutos" }
+      ]
+    },
     recipe: {
       name: "Salada de Atum com Abacate",
       ingredients: ["1 lata de atum", "1 abacate", "Tomate cereja", "Rúcula", "Limão"],
@@ -254,6 +467,17 @@ const CHALLENGE_DATA = [
   {
     day: 28,
     tip: "Organize suas refeições da próxima semana. Planejamento é fundamental!",
+    exercise: {
+      name: "Treino de Resistência",
+      duration: "40 minutos",
+      description: "Fortaleça todo o corpo com exercícios de resistência.",
+      sets: [
+        { exercise: "Agachamentos", reps: "4x15" },
+        { exercise: "Flexões", reps: "4x12" },
+        { exercise: "Avanços", reps: "3x12 cada perna" },
+        { exercise: "Prancha", reps: "3x60 segundos" }
+      ]
+    },
     recipe: {
       name: "Omelete de Forno com Vegetais",
       ingredients: ["6 ovos", "Espinafre", "Tomate", "Cebola", "Queijo light"],
@@ -263,6 +487,17 @@ const CHALLENGE_DATA = [
   {
     day: 29,
     tip: "Penúltimo dia! Comemore cada conquista. Você está quase lá!",
+    exercise: {
+      name: "Treino de Alta Intensidade",
+      duration: "45 minutos",
+      description: "Desafie-se com exercícios intensos.",
+      sets: [
+        { exercise: "Burpees", reps: "4x15" },
+        { exercise: "Agachamentos com salto", reps: "4x12" },
+        { exercise: "Mountain climbers", reps: "4x30" },
+        { exercise: "Polichinelos", reps: "4x40" }
+      ]
+    },
     recipe: {
       name: "Pizza Fit de Couve-Flor",
       ingredients: ["1 couve-flor", "2 ovos", "Queijo", "Molho de tomate", "Orégano"],
@@ -272,6 +507,14 @@ const CHALLENGE_DATA = [
   {
     day: 30,
     tip: "Parabéns! Você completou os 30 dias! Continue com os hábitos saudáveis que adquiriu.",
+    exercise: {
+      name: "Celebração Final",
+      duration: "50 minutos",
+      description: "Treino completo para celebrar sua conquista!",
+      sets: [
+        { exercise: "Todos os exercícios favoritos", reps: "À vontade" }
+      ]
+    },
     recipe: {
       name: "Celebration Bowl",
       ingredients: ["Arroz integral", "Frango grelhado", "Legumes grelhados", "Abacate", "Molho tahine"],

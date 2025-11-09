@@ -1,3 +1,4 @@
+
 import {
   Dialog,
   DialogContent,
@@ -6,12 +7,18 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Lightbulb, UtensilsCrossed, CheckCircle2 } from "lucide-react";
+import { Lightbulb, UtensilsCrossed, CheckCircle2, Dumbbell, Lock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface DayData {
   day: number;
   tip: string;
+  exercise: {
+    name: string;
+    duration: string;
+    description: string;
+    sets: Array<{ exercise: string; reps: string }>;
+  };
   recipe: {
     name: string;
     ingredients: string[];
@@ -25,6 +32,8 @@ interface DayDetailModalProps {
   dayData: DayData;
   isCompleted: boolean;
   onToggleComplete: () => void;
+  isLocked?: boolean;
+  onUnlock?: () => void;
 }
 
 export default function DayDetailModal({
@@ -33,6 +42,8 @@ export default function DayDetailModal({
   dayData,
   isCompleted,
   onToggleComplete,
+  isLocked = false,
+  onUnlock,
 }: DayDetailModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -53,18 +64,115 @@ export default function DayDetailModal({
         </DialogHeader>
 
         <div className="space-y-6 mt-4">
-          <div className="bg-accent/50 rounded-lg p-6">
-            <div className="flex items-start gap-3 mb-3">
-              <div className="bg-primary rounded-full p-2">
-                <Lightbulb className="w-5 h-5 text-primary-foreground" />
+          {/* Dica do Dia - Bloqueada para não premium */}
+          {isLocked ? (
+            <div className="bg-accent/30 rounded-lg p-6 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-orange-500/10 backdrop-blur-sm flex items-center justify-center z-10">
+                <div className="text-center">
+                  <Lock className="w-8 h-8 mx-auto mb-2 text-blue-600" />
+                  <p className="text-sm font-semibold text-gray-700">
+                    Desbloqueie o pacote completo para ver as dicas
+                  </p>
+                  <Button 
+                    onClick={onUnlock} 
+                    size="sm" 
+                    className="mt-3 bg-gradient-to-r from-blue-600 to-orange-600"
+                  >
+                    Desbloquear Agora
+                  </Button>
+                </div>
               </div>
-              <h3 className="text-lg font-semibold text-foreground">Dica do Dia</h3>
+              <div className="flex items-start gap-3 mb-3 blur-sm">
+                <div className="bg-primary rounded-full p-2">
+                  <Lightbulb className="w-5 h-5 text-primary-foreground" />
+                </div>
+                <h3 className="text-lg font-semibold text-foreground">Dica do Dia</h3>
+              </div>
+              <p className="text-foreground leading-relaxed blur-sm">
+                Conteúdo exclusivo para membros premium...
+              </p>
             </div>
-            <p className="text-foreground leading-relaxed" data-testid="text-tip">
-              {dayData.tip}
-            </p>
-          </div>
+          ) : (
+            <div className="bg-accent/50 rounded-lg p-6">
+              <div className="flex items-start gap-3 mb-3">
+                <div className="bg-primary rounded-full p-2">
+                  <Lightbulb className="w-5 h-5 text-primary-foreground" />
+                </div>
+                <h3 className="text-lg font-semibold text-foreground">Dica do Dia</h3>
+              </div>
+              <p className="text-foreground leading-relaxed" data-testid="text-tip">
+                {dayData.tip}
+              </p>
+            </div>
+          )}
 
+          {/* Exercício do Dia - Bloqueado para não premium */}
+          {isLocked ? (
+            <div className="bg-blue-50/30 rounded-lg p-6 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-orange-500/10 backdrop-blur-sm flex items-center justify-center z-10">
+                <div className="text-center">
+                  <Lock className="w-8 h-8 mx-auto mb-2 text-blue-600" />
+                  <p className="text-sm font-semibold text-gray-700">
+                    Desbloqueie o pacote completo para ver os exercícios
+                  </p>
+                  <Button 
+                    onClick={onUnlock} 
+                    size="sm" 
+                    className="mt-3 bg-gradient-to-r from-blue-600 to-orange-600"
+                  >
+                    Desbloquear Agora
+                  </Button>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 mb-4 blur-sm">
+                <div className="bg-blue-600 rounded-full p-2">
+                  <Dumbbell className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-foreground">Exercício do Dia</h3>
+              </div>
+              <div className="blur-sm">
+                <h4 className="font-semibold text-foreground mb-2">Treino Bloqueado</h4>
+                <p className="text-sm text-muted-foreground mb-2">Duração: XX minutos</p>
+                <p className="text-foreground text-sm mb-4">Conteúdo exclusivo...</p>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-blue-50/50 rounded-lg p-6">
+              <div className="flex items-start gap-3 mb-4">
+                <div className="bg-blue-600 rounded-full p-2">
+                  <Dumbbell className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-foreground">Exercício do Dia</h3>
+              </div>
+              
+              <h4 className="font-semibold text-foreground mb-2">
+                {dayData.exercise.name}
+              </h4>
+              
+              <p className="text-sm text-muted-foreground mb-2">
+                Duração: {dayData.exercise.duration}
+              </p>
+              
+              <p className="text-foreground text-sm mb-4">
+                {dayData.exercise.description}
+              </p>
+
+              {dayData.exercise.sets.length > 0 && (
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground mb-2">Séries:</p>
+                  <ul className="list-disc list-inside space-y-1 text-foreground">
+                    {dayData.exercise.sets.map((set, index) => (
+                      <li key={index} className="text-sm">
+                        {set.exercise} - {set.reps}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Receita - Sempre visível */}
           <div className="bg-muted/50 rounded-lg p-6">
             <div className="flex items-start gap-3 mb-4">
               <div className="bg-secondary rounded-full p-2">
@@ -102,6 +210,7 @@ export default function DayDetailModal({
               variant={isCompleted ? "outline" : "default"}
               onClick={onToggleComplete}
               data-testid="button-toggle-complete"
+              disabled={isLocked}
             >
               {isCompleted ? "Desmarcar como Feito" : "Marcar como Feito"}
             </Button>
