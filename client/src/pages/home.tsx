@@ -645,7 +645,7 @@ export default function Home() {
           dayData={currentDayData}
           isCompleted={completedDays.has(selectedDay!)}
           onToggleComplete={handleToggleComplete}
-          isLocked={selectedDay > FREE_DAYS_LIMIT && !isPremiumUser}
+          isLocked={!isPremiumUser}
           onUnlock={() => handleUpgrade()}
         />
       )}
