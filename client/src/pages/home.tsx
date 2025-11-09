@@ -4,6 +4,7 @@ import ProgressBar from "@/components/ProgressBar";
 import DayCalendar from "@/components/DayCalendar";
 import DayDetailModal from "@/components/DayDetailModal";
 import PaymentSection from "@/components/PaymentSection";
+import UpgradeCallToAction from "@/components/UpgradeCallToAction"; // Assumindo que este componente existe
 
 //todo: remove mock functionality - Replace with real data from backend
 const CHALLENGE_DATA = [
@@ -279,66 +280,120 @@ const CHALLENGE_DATA = [
   }
 ];
 
+const FREE_DAYS_LIMIT = 10; // Define o limite de dias gratuitos
+
 export default function Home() {
   const [showCalendar, setShowCalendar] = useState(false);
-  const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPremiumUser, setIsPremiumUser] = useState(false); // Controla se o usuário comprou o pacote completo
+  const [showUpgradeCTA, setShowUpgradeCTA] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem('summer-challenge-completed');
+    const stored = localStorage.getItem('completedDays');
     if (stored) {
       setCompletedDays(new Set(JSON.parse(stored)));
     }
+
+    // Verificar se o usuário já comprou o pacote completo
+    const premium = localStorage.getItem('isPremiumUser');
+    if (premium === 'true') {
+      setIsPremiumUser(true);
+    }
   }, []);
 
-  const saveProgress = (days: Set<number>) => {
-    localStorage.setItem('summer-challenge-completed', JSON.stringify(Array.from(days)));
-  };
+  useEffect(() => {
+    localStorage.setItem('completedDays', JSON.stringify(Array.from(completedDays)));
 
-  const handleStartChallenge = () => {
-    setShowCalendar(true);
-    setTimeout(() => {
-      const calendarSection = document.getElementById('calendar-section');
-      calendarSection?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+    // Mostrar CTA quando o usuário completar vários dias gratuitos (a partir do dia 7)
+    const freeCompletedDays = Array.from(completedDays).filter(day => day <= FREE_DAYS_LIMIT);
+    if (freeCompletedDays.length >= 7 && !isPremiumUser) {
+      setShowUpgradeCTA(true);
+    }
+  }, [completedDays, isPremiumUser]);
+
+  const saveProgress = (days: Set<number>) => {
+    localStorage.setItem('completedDays', JSON.stringify(Array.from(days)));
   };
 
   const handleDayClick = (day: number) => {
+    // Se o dia está bloqueado e o usuário não é premium, mostrar CTA
+    if (day > FREE_DAYS_LIMIT && !isPremiumUser) {
+      setShowUpgradeCTA(true);
+      // Scroll suave para a seção de pagamento
+      setTimeout(() => {
+        const paymentSection = document.getElementById('payment-section');
+        paymentSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+      return;
+    }
+
     setSelectedDay(day);
     setIsModalOpen(true);
   };
 
   const handleToggleComplete = () => {
     if (selectedDay === null) return;
-    
-    const newCompleted = new Set(completedDays);
-    if (newCompleted.has(selectedDay)) {
-      newCompleted.delete(selectedDay);
-    } else {
-      newCompleted.add(selectedDay);
+
+    setCompletedDays(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(selectedDay)) {
+        newSet.delete(selectedDay);
+      } else {
+        newSet.add(selectedDay);
+      }
+      return newSet;
+    });
+  };
+
+  const handleUpgrade = () => {
+    // Simular a compra e atualizar o estado
+    setIsPremiumUser(true);
+    localStorage.setItem('isPremiumUser', 'true');
+    setShowUpgradeCTA(false); // Ocultar CTA após o upgrade
+
+    // Scroll para a seção de pagamento se ainda não estiver visível
+    const paymentSection = document.getElementById('payment-section');
+    if (paymentSection && !isElementInView(paymentSection)) {
+      paymentSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-    setCompletedDays(newCompleted);
-    saveProgress(newCompleted);
+  };
+
+  const handleStartChallenge = () => {
+    // Scroll para o calendário
+    const calendar = document.getElementById('calendar-section');
+    calendar?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const currentDayData = selectedDay !== null ? CHALLENGE_DATA[selectedDay - 1] : null;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-orange-50 to-white">
       <HeroSection onStartChallenge={handleStartChallenge} />
-      
-      {showCalendar && (
-        <>
-          <div id="calendar-section">
-            <ProgressBar completedDays={completedDays.size} totalDays={30} />
-            <DayCalendar completedDays={completedDays} onDayClick={handleDayClick} />
-          </div>
-          <PaymentSection />
-        </>
-      )}
 
-      {!showCalendar && <PaymentSection />}
+      <div className="py-12 space-y-12">
+        <ProgressBar
+          completedDays={completedDays.size}
+          totalDays={isPremiumUser ? CHALLENGE_DATA.length : FREE_DAYS_LIMIT}
+        />
+
+        <div id="calendar-section">
+          <DayCalendar
+            completedDays={completedDays}
+            onDayClick={handleDayClick}
+            freeDaysLimit={isPremiumUser ? CHALLENGE_DATA.length : FREE_DAYS_LIMIT}
+          />
+        </div>
+
+        {showUpgradeCTA && !isPremiumUser && (
+          <UpgradeCallToAction onUpgrade={handleUpgrade} />
+        )}
+
+        <div id="payment-section">
+          <PaymentSection />
+        </div>
+      </div>
 
       {currentDayData && (
         <DayDetailModal
@@ -347,8 +402,21 @@ export default function Home() {
           dayData={currentDayData}
           isCompleted={completedDays.has(selectedDay!)}
           onToggleComplete={handleToggleComplete}
+          isLocked={selectedDay > FREE_DAYS_LIMIT && !isPremiumUser}
+          onUnlock={() => handleUpgrade()}
         />
       )}
     </div>
+  );
+}
+
+// Função auxiliar para verificar se um elemento está visível na tela
+function isElementInView(element: HTMLElement): boolean {
+  const rect = element.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
   );
 }

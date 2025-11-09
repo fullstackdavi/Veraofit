@@ -1,40 +1,49 @@
 import { Card } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { CheckCircle2, Lock } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface DayCardProps {
   day: number;
   isCompleted: boolean;
+  isLocked?: boolean; // Adicionado para indicar se o dia está bloqueado
   onClick: () => void;
 }
 
-export default function DayCard({ day, isCompleted, onClick }: DayCardProps) {
+export default function DayCard({ day, isCompleted, isLocked = false, onClick }: DayCardProps) {
   return (
-    <Card
-      className={`
-        relative p-6 cursor-pointer transition-all duration-300 
-        hover:shadow-lg hover:-translate-y-1 hover-elevate active-elevate-2
-        ${isCompleted ? 'bg-chart-3/10 border-chart-3' : 'bg-card/80 backdrop-blur-sm'}
-      `}
-      onClick={onClick}
-      data-testid={`card-day-${day}`}
+    <div
+      onClick={isLocked ? undefined : onClick} // Desabilita o clique se o dia estiver bloqueado
+      className={cn(
+        "relative rounded-xl p-6 transition-all duration-300",
+        "border-2 bg-white/90 backdrop-blur-sm",
+        isLocked 
+          ? "border-gray-300 bg-gray-100/50 cursor-not-allowed opacity-60" 
+          : "cursor-pointer hover:shadow-lg hover:-translate-y-1",
+        isCompleted && !isLocked
+          ? "border-green-400 bg-green-50/90" 
+          : !isLocked && "border-gray-200 hover:border-blue-300"
+      )}
     >
-      <div className="flex flex-col items-center justify-center gap-2">
-        <div className={`
-          text-3xl font-bold 
-          ${isCompleted ? 'text-chart-3' : 'text-foreground'}
-        `}>
+      <div className="flex flex-col items-center gap-2">
+        <span className={cn(
+          "text-3xl font-bold",
+          isLocked ? "text-gray-400" : "text-gray-800"
+        )}>
           {day}
-        </div>
-        <div className="text-xs text-muted-foreground font-medium">
+        </span>
+        <span className={cn(
+          "text-sm",
+          isLocked ? "text-gray-400" : "text-gray-600"
+        )}>
           Dia {day}
-        </div>
-        
-        {isCompleted && (
-          <div className="absolute top-2 right-2 bg-chart-3 rounded-full p-1">
-            <Check className="w-4 h-4 text-white" />
-          </div>
+        </span>
+        {isCompleted && !isLocked && (
+          <CheckCircle2 className="w-6 h-6 text-green-600 absolute top-2 right-2" />
+        )}
+        {isLocked && (
+          <Lock className="w-6 h-6 text-gray-400 absolute top-2 right-2" />
         )}
       </div>
-    </Card>
+    </div>
   );
 }
