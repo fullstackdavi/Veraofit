@@ -180,7 +180,7 @@
   body {
     @apply font-sans antialiased;
     position: relative;
-    background: transparent;
+    background-color: transparent !important;
   }
 
   /* === VIDEO BACKGROUND === */
@@ -188,8 +188,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     object-fit: cover;
     z-index: -2;
     pointer-events: none;
@@ -201,15 +201,15 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.3);
     z-index: -1;
     pointer-events: none;
   }
 
   /* === CONTENT POSITIONING === */
-  main, section, div, .container {
+  #root {
     position: relative;
     z-index: 1;
   }
@@ -257,19 +257,15 @@
   .card,
   .box,
   .content-box {
-    background: rgba(255, 255, 255, 0) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px);
     position: relative;
     z-index: 1;
   }
 
   /* === WHITE TEXT FOR VISIBILITY === */
   body, h1, h2, h3, h4, h5, h6,
-  p, span, li, label, div {
-    color: #fff !important;
-  }
-
-  /* Links */
-  a {
+  p, span, li, label, div, a {
     color: #fff !important;
   }
 
