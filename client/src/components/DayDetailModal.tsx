@@ -34,6 +34,7 @@ interface DayDetailModalProps {
   onToggleComplete: () => void;
   isLocked?: boolean;
   onUnlock?: () => void;
+  onContinue?: () => void;
 }
 
 export default function DayDetailModal({
@@ -44,6 +45,7 @@ export default function DayDetailModal({
   onToggleComplete,
   isLocked = false,
   onUnlock,
+  onContinue,
 }: DayDetailModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -166,18 +168,30 @@ export default function DayDetailModal({
             </div>
           </div>
 
-          <div className="flex gap-3 pt-4">
-            <Button
-              className="flex-1"
-              variant={isCompleted ? "outline" : "default"}
-              onClick={onToggleComplete}
-              data-testid="button-toggle-complete"
-            >
-              {isCompleted ? "Desmarcar como Feito" : "Marcar como Feito"}
-            </Button>
-            <Button variant="outline" onClick={onClose} data-testid="button-close">
-              Fechar
-            </Button>
+          <div className="flex flex-col gap-3 pt-4">
+            <div className="flex gap-3">
+              <Button
+                className="flex-1"
+                variant={isCompleted ? "outline" : "default"}
+                onClick={onToggleComplete}
+                data-testid="button-toggle-complete"
+              >
+                {isCompleted ? "Desmarcar como Feito" : "Marcar como Feito"}
+              </Button>
+              <Button variant="outline" onClick={onClose} data-testid="button-close">
+                Fechar
+              </Button>
+            </div>
+            
+            {isCompleted && onContinue && dayData.day < 30 && (
+              <Button
+                className="w-full bg-green-600 hover:bg-green-700"
+                onClick={onContinue}
+                data-testid="button-continue"
+              >
+                ▶ Continuar para Próximo Dia
+              </Button>
+            )}
           </div>
         </div>
       </DialogContent>

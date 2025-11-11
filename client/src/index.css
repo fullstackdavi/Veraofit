@@ -238,59 +238,7 @@
     pointer-events: none;
   }
 
-  /* === GLASSMORPHISM CARDS === */
-  .glass-card {
-    background: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  }
-
-  /* Apply to all card components */
-  [class*="card"], 
-  [class*="Card"] {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-color: rgba(255, 255, 255, 0.15);
-  }
-
-  /* === TEXT VISIBILITY === */
-  h1, h2, h3, h4, h5, h6 {
-    color: #ffffff !important;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
-  }
-
-  p, span, li, label {
-    color: rgba(255, 255, 255, 0.95) !important;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
-  }
-
-  /* Links */
-  a {
-    color: rgba(255, 255, 255, 0.95) !important;
-    transition: color 0.3s ease;
-  }
-
-  a:hover {
-    color: #00ffb3 !important;
-  }
-
-  /* Button text */
-  button {
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-  }
-
-  /* Input fields with glass effect */
-  input, textarea, select {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
-    color: #ffffff !important;
-  }
-
-  input::placeholder, textarea::placeholder {
-    color: rgba(255, 255, 255, 0.6) !important;
-  }
+  /* Removidos estilos globais problemáticos que afetavam contraste */
 
   /* .no-default-hover-elevate/no-default-active-elevate is an escape hatch so consumers of
    * buttons/badges can remove the automatic brightness adjustment on interactions
@@ -346,8 +294,8 @@
     inset: 0px;
     /*border-radius: inherit;   match rounded corners */
     border-radius: inherit;
-    z-index: 999;
-    /* sits in front of content */
+    z-index: -1;
+    /* sits behind content but above backdrop */
   }
 
   .hover-elevate:hover:not(.no-default-hover-elevate)::after,

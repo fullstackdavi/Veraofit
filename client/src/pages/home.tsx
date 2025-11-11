@@ -4,7 +4,8 @@ import ProgressBar from "@/components/ProgressBar";
 import DayCalendar from "@/components/DayCalendar";
 import DayDetailModal from "@/components/DayDetailModal";
 import PaymentSection from "@/components/PaymentSection";
-import UpgradeCallToAction from "@/components/UpgradeCallToAction"; // Assumindo que este componente existe
+import UpgradeCallToAction from "@/components/UpgradeCallToAction";
+import RewardSystem from "@/components/RewardSystem";
 
 //todo: remove mock functionality - Replace with real data from backend
 const CHALLENGE_DATA = [
@@ -578,6 +579,11 @@ export default function Home() {
 
   const handleToggleComplete = () => {
     if (selectedDay === null) return;
+    
+    const freeDaysLimit = isPremiumUser ? CHALLENGE_DATA.length : FREE_DAYS_LIMIT;
+    if (selectedDay > freeDaysLimit && !isPremiumUser) {
+      return;
+    }
 
     setCompletedDays(prev => {
       const newSet = new Set(prev);
@@ -588,6 +594,28 @@ export default function Home() {
       }
       return newSet;
     });
+  };
+
+  const handleContinueToNext = () => {
+    if (selectedDay === null) return;
+    
+    const nextDay = selectedDay + 1;
+    const freeDaysLimit = isPremiumUser ? CHALLENGE_DATA.length : FREE_DAYS_LIMIT;
+    
+    if (nextDay <= CHALLENGE_DATA.length && nextDay <= freeDaysLimit) {
+      setIsModalOpen(false);
+      setTimeout(() => {
+        setSelectedDay(nextDay);
+        setIsModalOpen(true);
+      }, 300);
+    } else if (nextDay > freeDaysLimit && !isPremiumUser) {
+      setIsModalOpen(false);
+      setShowUpgradeCTA(true);
+      setTimeout(() => {
+        const paymentSection = document.getElementById('payment-section');
+        paymentSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
   };
 
   const handleUpgrade = () => {
@@ -615,7 +643,9 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-orange-50 to-white">
       <HeroSection onStartChallenge={handleStartChallenge} />
 
-      <div className="py-12 space-y-12">
+      <div className="py-12 space-y-12 container mx-auto px-4">
+        <RewardSystem completedDays={completedDays.size} />
+
         <ProgressBar
           completedDays={completedDays.size}
           totalDays={isPremiumUser ? CHALLENGE_DATA.length : FREE_DAYS_LIMIT}
@@ -647,6 +677,7 @@ export default function Home() {
           onToggleComplete={handleToggleComplete}
           isLocked={!isPremiumUser}
           onUnlock={() => handleUpgrade()}
+          onContinue={handleContinueToNext}
         />
       )}
     </div>
