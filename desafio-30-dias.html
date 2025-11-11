@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio 30 Dias - Transforme Seu Corpo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header/Hero */
+        .hero {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        /* Barra de Progresso Gamificada */
+        .gamification-progress {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .progress-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .progress-header h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .points-display {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .points-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .points-card h3 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .points-card p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .price-tracker {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .price-item {
+            text-align: center;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 1.5em;
+        }
+
+        .current-price {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .price-arrow {
+            font-size: 2em;
+            color: #667eea;
+        }
+
+        .discount-percentage {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        /* Etapas de Recompensa */
+        .reward-stages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .reward-stage {
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .reward-stage.completed {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-color: #28a745;
+            transform: scale(1.05);
+        }
+
+        .reward-stage.active {
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .reward-stage h4 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .reward-stage .bonus {
+            font-size: 0.9em;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        /* Calendário */
+        .calendar-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .calendar-section h2 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .day-card {
+            background: #ffffff;
+            border: 3px solid #333;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .day-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .day-card.completed {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-color: #28a745;
+        }
+
+        .day-card.locked {
+            background: #f0f0f0;
+            border-color: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .day-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .day-card.completed .day-number {
+            color: white;
+        }
+
+        .day-label {
+            font-size: 0.9em;
+            margin-top: 5px;
+            color: #666;
+        }
+
+        .day-card.completed .day-label {
+            color: white;
+        }
+
+        .check-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            font-size: 1.5em;
+        }
+
+        .lock-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #999;
+            font-size: 1.5em;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            color: #667eea;
+            font-size: 2em;
+        }
+
+        .close-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .content-section {
+            background: #f8f9fa;
+            border: 2px solid #333;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .content-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-section p,
+        .content-section li {
+            color: #333;
+            line-height: 1.8;
+            font-size: 1.05em;
+        }
+
+        .content-section ul,
+        .content-section ol {
+            margin-left: 20px;
+            color: #333;
+        }
+
+        .icon {
+            font-size: 1.5em;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn.completed {
+            background: #28a745;
+        }
+
+        /* Botão de Continuar */
+        .continue-btn {
+            background: #28a745;
+            margin-top: 10px;
+        }
+
+        .continue-btn:hover {
+            background: #20c997;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            .calendar-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 10px;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .current-price {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>🔥 Desafio 30 Dias 🔥</h1>
+            <p>Transforme seu corpo e ganhe descontos incríveis conforme avança!</p>
+        </div>
+
+        <!-- Sistema de Gamificação -->
+        <div class="gamification-progress">
+            <div class="progress-header">
+                <h2>🎯 Seu Progresso Gamificado</h2>
+                <p>Complete etapas e desbloqueie descontos progressivos!</p>
+            </div>
+
+            <div class="points-display">
+                <div class="points-card">
+                    <h3 id="points-earned">0</h3>
+                    <p>Pontos Ganhos</p>
+                </div>
+                <div class="points-card">
+                    <h3 id="days-completed">0/30</h3>
+                    <p>Dias Completados</p>
+                </div>
+                <div class="points-card">
+                    <h3 id="current-level">Nível 1</h3>
+                    <p>Nível Atual</p>
+                </div>
+            </div>
+
+            <div class="price-tracker">
+                <div class="price-item">
+                    <div class="original-price">R$ 90,00</div>
+                    <small>Preço Original</small>
+                </div>
+                <div class="price-arrow">→</div>
+                <div class="price-item">
+                    <div class="current-price" id="current-price">R$ 90,00</div>
+                    <div class="discount-percentage" id="discount-badge">0% OFF</div>
+                    <small>Seu Preço Atual</small>
+                </div>
+            </div>
+
+            <!-- Etapas de Recompensa -->
+            <h3 style="text-align: center; margin: 30px 0; color: #667eea;">🎁 Etapas de Recompensa</h3>
+            <div class="reward-stages" id="reward-stages">
+                <!-- Serão preenchidas dinamicamente -->
+            </div>
+        </div>
+
+        <!-- Calendário -->
+        <div class="calendar-section">
+            <h2>📅 Calendário do Desafio</h2>
+            <div class="calendar-grid" id="calendar">
+                <!-- Os dias serão gerados dinamicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Dia 1</h2>
+                <button class="close-btn" onclick="closeModal()">✕ Fechar</button>
+            </div>
+
+            <div id="modal-body">
+                <!-- Conteúdo será preenchido dinamicamente -->
+            </div>
+
+            <button class="btn" id="complete-btn" onclick="toggleComplete()">
+                Marcar como Concluído
+            </button>
+            
+            <button class="btn continue-btn" id="continue-btn" style="display: none;" onclick="continueToNext()">
+                ▶ Continuar para Próximo Dia
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Dados do desafio (30 dias)
+        const challengeData = [
+            {
+                day: 1,
+                tip: "Beba pelo menos 2 litros de água ao longo do dia e caminhe por 30 minutos. A hidratação é essencial para o metabolismo e a caminhada ajuda a queimar calorias.",
+                exercise: {
+                    name: "Caminhada Leve",
+                    duration: "30 minutos",
+                    description: "Caminhe em ritmo confortável, mantendo uma respiração constante.",
+                    sets: []
+                },
+                recipe: {
+                    name: "Salada de Quinoa com Legumes",
+                    ingredients: ["1 xícara de quinoa cozida", "1 tomate picado", "1 pepino picado", "1/2 cebola roxa", "Suco de 1 limão", "Azeite, sal e pimenta"],
+                    steps: ["Cozinhe a quinoa e deixe esfriar", "Misture todos os vegetais picados", "Tempere com limão, azeite, sal e pimenta", "Sirva gelado"]
+                }
+            },
+            {
+                day: 2,
+                tip: "Faça 20 minutos de exercícios aeróbicos pela manhã. O exercício matinal acelera o metabolismo para o resto do dia.",
+                exercise: {
+                    name: "Exercícios Aeróbicos",
+                    duration: "20 minutos",
+                    description: "Polichinelos e corrida estacionária alternados.",
+                    sets: [
+                        { exercise: "Polichinelos", reps: "3x30 segundos" },
+                        { exercise: "Corrida estacionária", reps: "3x1 minuto" }
+                    ]
+                },
+                recipe: {
+                    name: "Omelete de Claras com Espinafre",
+                    ingredients: ["4 claras de ovo", "1 xícara de espinafre", "1/2 tomate picado", "Sal e pimenta"],
+                    steps: ["Bata as claras levemente", "Adicione espinafre e tomate", "Cozinhe em fogo médio por 3-4 minutos", "Dobre ao meio e sirva"]
+                }
+            },
+            {
+                day: 3,
+                tip: "Evite açúcar refinado hoje. Substitua por frutas frescas quando sentir vontade de doce.",
+                exercise: {
+                    name: "Alongamento Matinal",
+                    duration: "15 minutos",
+                    description: "Alongue todo o corpo de forma suave.",
+                    sets: []
+                },
+                recipe: {
+                    name: "Smoothie Verde Detox",
+                    ingredients: ["1 banana", "1 xícara de espinafre", "1/2 maçã verde", "200ml de água de coco", "Gelo"],
+                    steps: ["Coloque todos os ingredientes no liquidificador", "Bata até ficar homogêneo", "Sirva imediatamente"]
+                }
+            },
+            {
+                day: 4,
+                tip: "Faça 30 agachamentos e 20 flexões. Exercícios de força ajudam a tonificar e queimar gordura.",
+                exercise: {
+                    name: "Treino de Força Básico",
+                    duration: "25 minutos",
+                    description: "Exercícios para fortalecer e tonificar o corpo.",
+                    sets: [
+                        { exercise: "Agachamentos", reps: "3x10" },
+                        { exercise: "Flexões (pode ser de joelhos)", reps: "3x8" },
+                        { exercise: "Prancha", reps: "3x20 segundos" }
+                    ]
+                },
+                recipe: {
+                    name: "Frango Grelhado com Brócolis",
+                    ingredients: ["1 peito de frango", "2 xícaras de brócolis", "Alho, limão e azeite"],
+                    steps: ["Tempere o frango com alho e limão", "Grelhe por 6-8 minutos de cada lado", "Cozinhe o brócolis no vapor por 5 minutos", "Sirva com azeite"]
+                }
+            },
+            {
+                day: 5,
+                tip: "Pratique 15 minutos de meditação ou yoga. O controle do estresse ajuda na perda de peso.",
+                exercise: {
+                    name: "Yoga para Iniciantes",
+                    duration: "15 minutos",
+                    description: "Sequência básica de yoga para relaxamento e alongamento.",
+                    sets: []
+                },
+                recipe: {
+                    name: "Bowl de Açaí Light",
+                    ingredients: ["1 pack de açaí sem açúcar", "1/2 banana", "Granola integral", "Morangos"],
+                    steps: ["Bata o açaí com meio copo de água", "Coloque na tigela", "Adicione banana, granola e morangos", "Sirva imediatamente"]
+                }
+            },
+            {
+                day: 6,
+                tip: "Caminhe 10.000 passos hoje. Use um aplicativo contador de passos para monitorar.",
+                exercise: {
+                    name: "Caminhada Ativa",
+                    duration: "45 minutos",
+                    description: "Caminhe em ritmo acelerado para atingir 10.000 passos.",
+                    sets: []
+                },
+                recipe: {
+                    name: "Sopa de Legumes",
+                    ingredients: ["2 cenouras", "1 abobrinha", "1 cebola", "2 tomates", "Caldo de legumes", "Temperos"],
+                    steps: ["Refogue a cebola", "Adicione os legumes picados", "Cubra com caldo de legumes", "Cozinhe por 20 minutos"]
+                }
+            },
+            {
+                day: 7,
+                tip: "Dia de descanso ativo! Faça alongamentos suaves e descanse bem para recuperação muscular.",
+                exercise: {
+                    name: "Descanso Ativo",
+                    duration: "20 minutos",
+                    description: "Alongamento suave e respiração profunda.",
+                    sets: []
+                },
+                recipe: {
+                    name: "Wrap Integral de Atum",
+                    ingredients: ["1 tortilha integral", "1 lata de atum", "Alface", "Tomate", "Cenoura ralada"],
+                    steps: ["Escorra o atum", "Coloque todos os ingredientes na tortilha", "Enrole firmemente", "Corte ao meio e sirva"]
+                }
+            },
+            {
+                day: 8,
+                tip: "Elimine refrigerantes e bebidas açucaradas. Beba água com limão ou chás naturais.",
+                exercise: {
+                    name: "Cardio Intervalado",
+                    duration: "25 minutos",
+                    description: "Alterne entre alta e baixa intensidade.",
+                    sets: [
+                        { exercise: "Corrida estacionária rápida", reps: "5x1 minuto" },
+                        { exercise: "Caminhada leve", reps: "5x2 minutos" }
+                    ]
+                },
+                recipe: {
+                    name: "Tapioca com Queijo Cottage",
+                    ingredients: ["3 colheres de goma de tapioca", "2 colheres de queijo cottage", "Tomate cereja", "Manjericão"],
+                    steps: ["Hidrate a tapioca", "Faça a tapioca na frigideira", "Recheie com cottage e tomate", "Finalize com manjericão"]
+                }
+            },
+            {
+                day: 9,
+                tip: "Faça 25 abdominais e 30 segundos de prancha. Fortaleça o core!",
+                exercise: {
+                    name: "Treino de Core",
+                    duration: "20 minutos",
+                    description: "Fortaleça o abdômen e a região central do corpo.",
+                    sets: [
+                        { exercise: "Abdominais", reps: "3x15" },
+                        { exercise: "Prancha", reps: "3x30 segundos" },
+                        { exercise: "Prancha lateral", reps: "3x20 segundos cada lado" }
+                    ]
+                },
+                recipe: {
+                    name: "Salada Caprese Light",
+                    ingredients: ["Tomates", "Mussarela de búfala light", "Manjericão fresco", "Azeite e vinagre balsâmico"],
+                    steps: ["Fatie tomates e mussarela", "Intercale com manjericão", "Regue com azeite e vinagre", "Tempere com sal e pimenta"]
+                }
+            },
+            {
+                day: 10,
+                tip: "Aumente a intensidade! 40 minutos de cardio moderado hoje.",
+                exercise: {
+                    name: "Cardio Moderado",
+                    duration: "40 minutos",
+                    description: "Corrida leve ou bicicleta em ritmo constante.",
+                    sets: []
+                },
+                recipe: {
+                    name: "Peixe Assado com Legumes",
+                    ingredients: ["1 filé de peixe branco", "Abobrinha", "Cenoura", "Pimentão", "Limão e ervas"],
+                    steps: ["Tempere o peixe com limão e ervas", "Corte os legumes em tiras", "Disponha tudo em uma assadeira", "Asse a 180°C por 25 minutos"]
+                }
+            },
+            {
+                day: 11,
+                tip: "Mastigue devagar e saboreie cada refeição. Isso ajuda na digestão e saciedade.",
+                exercise: {
+                    name: "Pilates Básico",
+                    duration: "30 minutos",
+                    description: "Exercícios de pilates para fortalecer e alongar.",
+                    sets: []
+                },
+                recipe: {
+                    name: "Panqueca de Banana e Aveia",
+                    ingredients: ["1 banana", "2 ovos", "3 colheres de aveia", "Canela"],
+                    steps: ["Amasse a banana", "Misture com ovos e aveia", "Adicione canela", "Cozinhe em frigideira antiaderente"]
+                }
+            },
+            {
+                day: 12,
+                tip: "Durma pelo menos 7-8 horas. O sono adequado é crucial para a perda de peso.",
+                exercise: {
+                    name: "Treino Leve de Recuperação",
+                    duration: "20 minutos",
+                    description: "Alongamento e respiração para promover o relaxamento.",
+                    sets: []
+                },
+                recipe: {
+                    name: "Risoto de Cogumelos Light",
+                    ingredients: ["Arroz integral", "Cogumelos variados", "Cebola", "Caldo de legumes", "Queijo parmesão light"],
+                    steps: ["Refogue cebola e cogumelos", "Adicione o arroz", "Vá adicionando caldo aos poucos", "Finalize com queijo"]
+                }
+            },
+            {
+                day: 13,
+                tip: "Faça treino intervalado: 1 min intenso, 2 min leve, repita 10x.",
+                exercise: {
+                    name: "HIIT Intervalado",
+                    duration: "30 minutos",
+                    description: "Alterne entre alta e baixa intensidade.",
+                    sets: [
+                        { exercise: "Burpees", reps: "10x1 minuto" },
+                        { exercise: "Caminhada leve", reps: "10x2 minutos" }
+                    ]
+                },
+                recipe: {
+                    name: "Salada de Grão-de-Bico",
+                    ingredients: ["1 lata de grão-de-bico", "Pepino", "Tomate", "Cebola roxa", "Salsinha", "Limão"],
+                    steps: ["Escorra e lave o grão-de-bico", "Pique todos os vegetais", "Misture tudo", "Tempere com limão, sal e azeite"]
+                }
+            },
+            {
+                day: 14,
+                tip: "Avalie seu progresso! Tire fotos e anote suas medidas. Metade do caminho!",
+                exercise: {
+                    name: "Treino Completo",
+                    duration: "35 minutos",
+                    description: "Combine cardio e força para avaliar seu progresso.",
+                    sets: [
+                        { exercise: "Agachamentos", reps: "3x15" },
+                        { exercise: "Flexões", reps: "3x12" },
+                        { exercise: "Polichinelos", reps: "3x30" },
+                        { exercise: "Prancha", reps: "3x40 segundos" }
+                    ]
+                },
+                recipe: {
+                    name: "Bowl de Iogurte Grego",
+                    ingredients: ["200g iogurte grego natural", "Frutas vermelhas", "Granola", "Mel", "Chia"],
+                    steps: ["Coloque o iogurte na tigela", "Adicione frutas", "Polvilhe granola e chia", "Finalize com um fio de mel"]
+                }
+            },
+            {
+                day: 15,
+                tip: "Aumente a ingestão de proteínas. Elas mantêm a saciedade por mais tempo.",
+                exercise: {
+                    name: "Treino de Pernas",
+                    duration: "30 minutos",
+                    description: "Foque em fortalecer as pernas e glúteos.",
+                    sets: [
+                        { exercise: "Agachamentos", reps: "4x12" },
+                        { exercise: "Avanços", reps: "3x10 cada perna" },
+                        { exercise: "Elevação de panturrilha", reps: "3x15" }
+                    ]
+                },
+                recipe: {
+                    name: "Hambúrguer de Frango Caseiro",
+                    ingredients: ["500g peito de frango moído", "1 ovo", "Aveia", "Alho e cebola", "Temperos"],
+                    steps: ["Misture todos os ingredientes", "Molde os hambúrgueres", "Grelhe ou asse", "Sirva com salada"]
+                }
+            },
+            {
+                day: 16,
+                tip: "Faça uma aula online de dança ou zumba. Exercício divertido queima mais calorias!",
+                exercise: {
+                    name: "Dança Fitness",
+                    duration: "40 minutos",
+                    description: "Dance livremente ao som de músicas animadas.",
+                    sets: []
+                },
+                recipe: {
+                    name: "Ceviche de Peixe",
+                    ingredients: ["400g peixe branco em cubos", "Suco de 3 limões", "Cebola roxa", "Coentro", "Pimenta"],
+                    steps: ["Marine o peixe no limão por 15 min", "Adicione cebola e coentro", "Tempere com sal e pimenta", "Sirva gelado"]
+                }
+            },
+            {
+                day: 17,
+                tip: "Evite comer 3 horas antes de dormir. Isso melhora a digestão e o sono.",
+                exercise: {
+                    name: "Yoga Noturno",
+                    duration: "20 minutos",
+                    description: "Posturas relaxantes para melhorar o sono.",
+                    sets: []
+                },
+                recipe: {
+                    name: "Espaguete de Abobrinha",
+                    ingredients: ["2 abobrinhas grandes", "Molho de tomate caseiro", "Manjericão", "Alho"],
+                    steps: ["Corte a abobrinha em tiras finas", "Refogue levemente", "Adicione o molho de tomate", "Finalize com manjericão"]
+                }
+            },
+            {
+                day: 18,
+                tip: "Faça 50 polichinelos e 30 mountain climbers. Aumente a intensidade!",
+                exercise: {
+                    name: "Treino Cardio Intenso",
+                    duration: "30 minutos",
+                    description: "Exercícios de alta intensidade.",
+                    sets: [
+                        { exercise: "Polichinelos", reps: "5x50" },
+                        { exercise: "Mountain climbers", reps: "5x30" },
+                        { exercise: "Burpees", reps: "3x10" }
+                    ]
+                },
+                recipe: {
+                    name: "Tofu Grelhado com Gergelim",
+                    ingredients: ["200g tofu firme", "Molho shoyu", "Gergelim", "Gengibre", "Alho"],
+                    steps: ["Corte o tofu em fatias", "Marine no shoyu com alho e gengibre", "Grelhe até dourar", "Polvilhe gergelim"]
+                }
+            },
+            {
+                day: 19,
+                tip: "Beba chá verde ou chá branco. Eles aceleram o metabolismo naturalmente.",
+                exercise: {
+                    name: "Caminhada Energética",
+                    duration: "35 minutos",
+                    description: "Caminhe em ritmo acelerado ao ar livre.",
+                    sets: []
+                },
+                recipe: {
+                    name: "Bruschetta de Tomate",
+                    ingredients: ["Pão integral", "Tomates", "Manjericão", "Alho", "Azeite"],
+                    steps: ["Toste o pão", "Pique tomate com manjericão", "Misture com alho e azeite", "Coloque sobre o pão"]
+                }
+            },
+            {
+                day: 20,
+                tip: "Faça uma caminhada de 45 minutos ao ar livre. Aproveite a natureza!",
+                exercise: {
+                    name: "Caminhada na Natureza",
+                    duration: "45 minutos",
+                    description: "Aproveite o ar livre e conecte-se com a natureza.",
+                    sets: []
+                },
+                recipe: {
+                    name: "Curry de Lentilha",
+                    ingredients: ["1 xícara de lentilha", "Leite de coco light", "Curry em pó", "Cebola", "Tomate"],
+                    steps: ["Cozinhe a lentilha", "Refogue cebola e tomate", "Adicione curry e leite de coco", "Misture com a lentilha"]
+                }
+            },
+            {
+                day: 21,
+                tip: "Três semanas completas! Continue firme. O resultado já é visível!",
+                exercise: {
+                    name: "Treino Celebração",
+                    duration: "40 minutos",
+                    description: "Circuito completo para celebrar sua jornada.",
+                    sets: [
+                        { exercise: "Agachamentos", reps: "3x20" },
+                        { exercise: "Flexões", reps: "3x15" },
+                        { exercise: "Abdominais", reps: "3x20" },
+                        { exercise: "Prancha", reps: "3x45 segundos" }
+                    ]
+                },
+                recipe: {
+                    name: "Salada Caesar Light",
+                    ingredients: ["Alface romana", "Frango grelhado", "Croutons integrais", "Molho caesar light", "Parmesão"],
+                    steps: ["Grelhe o frango", "Rasgue a alface", "Adicione croutons", "Regue com molho e polvilhe queijo"]
+                }
+            },
+            {
+                day: 22,
+                tip: "Faça agachamentos com salto - 3 séries de 15. Queime gordura e ganhe massa!",
+                exercise: {
+                    name: "Treino Pliométrico",
+                    duration: "30 minutos",
+                    description: "Exercícios explosivos para queimar gordura.",
+                    sets: [
+                        { exercise: "Agachamentos com salto", reps: "3x15" },
+                        { exercise: "Avanços com salto", reps: "3x10 cada perna" },
+                        { exercise: "Burpees", reps: "3x12" }
+                    ]
+                },
+                recipe: {
+                    name: "Berinjela Recheada",
+                    ingredients: ["2 berinjelas", "Carne moída magra", "Tomate", "Cebola", "Queijo light"],
+                    steps: ["Corte berinjelas ao meio e retire o miolo", "Refogue carne com tomate e cebola", "Recheie as berinjelas", "Cubra com queijo e asse"]
+                }
+            },
+            {
+                day: 23,
+                tip: "Hidrate-se! Beba 3 litros de água hoje e observe a diferença.",
+                exercise: {
+                    name: "Natação ou Hidroginástica",
+                    duration: "45 minutos",
+                    description: "Exercícios aquáticos de baixo impacto.",
+                    sets: []
+                },
+                recipe: {
+                    name: "Tabule de Quinoa",
+                    ingredients: ["Quinoa cozida", "Tomate", "Pepino", "Hortelã", "Salsinha", "Limão"],
+                    steps: ["Pique todos os vegetais", "Misture com a quinoa", "Adicione ervas frescas", "Tempere com limão e azeite"]
+                }
+            },
+            {
+                day: 24,
+                tip: "Pratique gratidão. Liste 5 coisas boas sobre sua jornada até aqui.",
+                exercise: {
+                    name: "Meditação e Alongamento",
+                    duration: "25 minutos",
+                    description: "Exercícios para mente e corpo.",
+                    sets: []
+                },
+                recipe: {
+                    name: "Moqueca Light de Peixe",
+                    ingredients: ["Peixe", "Tomate", "Pimentão", "Cebola", "Leite de coco light", "Coentro"],
+                    steps: ["Disponha peixe em uma panela", "Adicione vegetais picados", "Regue com leite de coco", "Cozinhe por 20 minutos"]
+                }
+            },
+            {
+                day: 25,
+                tip: "Faça burpees - 3 séries de 10. Exercício completo para todo o corpo!",
+                exercise: {
+                    name: "Treino Full Body",
+                    duration: "35 minutos",
+                    description: "Treino completo de corpo inteiro.",
+                    sets: [
+                        { exercise: "Burpees", reps: "3x10" },
+                        { exercise: "Agachamentos", reps: "3x15" },
+                        { exercise: "Flexões", reps: "3x12" },
+                        { exercise: "Mountain climbers", reps: "3x20" }
+                    ]
+                },
+                recipe: {
+                    name: "Wrap de Alface com Peru",
+                    ingredients: ["Folhas de alface grandes", "Peito de peru", "Cenoura ralada", "Abacate", "Mostarda"],
+                    steps: ["Coloque peru nas folhas de alface", "Adicione cenoura e abacate", "Tempere com mostarda", "Enrole como um wrap"]
+                }
+            },
+            {
+                day: 26,
+                tip: "Reduza o sal. Use ervas e especiarias para dar sabor às refeições.",
+                exercise: {
+                    name: "Treino de Braços",
+                    duration: "30 minutos",
+                    description: "Fortaleça e tonifique os braços.",
+                    sets: [
+                        { exercise: "Flexões", reps: "4x12" },
+                        { exercise: "Tríceps no banco", reps: "3x15" },
+                        { exercise: "Rosca direta", reps: "3x12" }
+                    ]
+                },
+                recipe: {
+                    name: "Stir-Fry de Vegetais",
+                    ingredients: ["Brócolis", "Cenoura", "Pimentão", "Cogumelos", "Molho shoyu", "Gengibre"],
+                    steps: ["Corte todos os vegetais", "Refogue em fogo alto", "Adicione shoyu e gengibre", "Cozinhe por 5 minutos"]
+                }
+            },
+            {
+                day: 27,
+                tip: "Reta final! Faça 60 minutos de atividade física hoje. Você consegue!",
+                exercise: {
+                    name: "Desafio 60 Minutos",
+                    duration: "60 minutos",
+                    description: "Combine cardio e força para o desafio final.",
+                    sets: [
+                        { exercise: "Corrida/caminhada", reps: "30 minutos" },
+                        { exercise: "Circuito de força", reps: "30 minutos" }
+                    ]
+                },
+                recipe: {
+                    name: "Salada de Atum com Abacate",
+                    ingredients: ["1 lata de atum", "1 abacate", "Tomate cereja", "Rúcula", "Limão"],
+                    steps: ["Escorra o atum", "Corte o abacate", "Misture com tomate e rúcula", "Tempere com limão"]
+                }
+            },
+            {
+                day: 28,
+                tip: "Organize suas refeições da próxima semana. Planejamento é fundamental!",
+                exercise: {
+                    name: "Treino de Resistência",
+                    duration: "40 minutos",
+                    description: "Fortaleça todo o corpo com exercícios de resistência.",
+                    sets: [
+                        { exercise: "Agachamentos", reps: "4x15" },
+                        { exercise: "Flexões", reps: "4x12" },
+                        { exercise: "Avanços", reps: "3x12 cada perna" },
+                        { exercise: "Prancha", reps: "3x60 segundos" }
+                    ]
+                },
+                recipe: {
+                    name: "Omelete de Forno com Vegetais",
+                    ingredients: ["6 ovos", "Espinafre", "Tomate", "Cebola", "Queijo light"],
+                    steps: ["Bata os ovos", "Adicione vegetais picados", "Despeje em forma untada", "Asse a 180°C por 25 minutos"]
+                }
+            },
+            {
+                day: 29,
+                tip: "Penúltimo dia! Comemore cada conquista. Você está quase lá!",
+                exercise: {
+                    name: "Treino de Alta Intensidade",
+                    duration: "45 minutos",
+                    description: "Desafie-se com exercícios intensos.",
+                    sets: [
+                        { exercise: "Burpees", reps: "4x15" },
+                        { exercise: "Agachamentos com salto", reps: "4x12" },
+                        { exercise: "Mountain climbers", reps: "4x30" },
+                        { exercise: "Polichinelos", reps: "4x40" }
+                    ]
+                },
+                recipe: {
+                    name: "Pizza Fit de Couve-Flor",
+                    ingredients: ["1 couve-flor", "2 ovos", "Queijo", "Molho de tomate", "Orégano"],
+                    steps: ["Processe a couve-flor", "Misture com ovos e queijo", "Faça discos e asse", "Adicione molho e mais queijo"]
+                }
+            },
+            {
+                day: 30,
+                tip: "Parabéns! Você completou os 30 dias! Continue com os hábitos saudáveis que adquiriu.",
+                exercise: {
+                    name: "Celebração Final",
+                    duration: "50 minutos",
+                    description: "Treino completo para celebrar sua conquista!",
+                    sets: [
+                        { exercise: "Todos os exercícios favoritos", reps: "À vontade" }
+                    ]
+                },
+                recipe: {
+                    name: "Celebration Bowl",
+                    ingredients: ["Arroz integral", "Frango grelhado", "Legumes grelhados", "Abacate", "Molho tahine"],
+                    steps: ["Cozinhe o arroz", "Grelhe frango e legumes", "Monte tudo em uma tigela", "Finalize com abacate e molho"]
+                }
+            }
+        ];
+
+        // Etapas de recompensa (6 etapas = 5 dias cada)
+        const rewardStages = [
+            { stage: 1, daysRequired: 5, discount: 10, price: 81, bonus: "🎯 E-book de Receitas" },
+            { stage: 2, daysRequired: 10, discount: 20, price: 72, bonus: "💪 Guia de Exercícios" },
+            { stage: 3, daysRequired: 15, discount: 30, price: 63, bonus: "📊 Planilha de Controle" },
+            { stage: 4, daysRequired: 20, discount: 40, price: 54, bonus: "🥗 Plano Alimentar" },
+            { stage: 5, daysRequired: 25, discount: 50, price: 45, bonus: "🏃 Programa Avançado" },
+            { stage: 6, daysRequired: 30, discount: 67, price: 29.90, bonus: "🏆 Acesso Vitalício" }
+        ];
+
+        // Estado do jogo
+        let completedDays = new Set();
+        let currentDay = null;
+
+        // Inicializar
+        function init() {
+            loadProgress();
+            renderCalendar();
+            renderRewardStages();
+            updateGamification();
+        }
+
+        // Carregar progresso do localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('completedDays');
+            if (saved) {
+                completedDays = new Set(JSON.parse(saved));
+            }
+        }
+
+        // Salvar progresso
+        function saveProgress() {
+            localStorage.setItem('completedDays', JSON.stringify([...completedDays]));
+        }
+
+        // Renderizar calendário
+        function renderCalendar() {
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+
+            for (let i = 1; i <= 30; i++) {
+                const dayCard = document.createElement('div');
+                dayCard.className = 'day-card';
+                
+                if (completedDays.has(i)) {
+                    dayCard.classList.add('completed');
+                }
+
+                dayCard.innerHTML = `
+                    <div class="day-number">${i}</div>
+                    <div class="day-label">Dia ${i}</div>
+                    ${completedDays.has(i) ? '<div class="check-icon">✓</div>' : ''}
+                `;
+
+                dayCard.onclick = () => openDay(i);
+                calendar.appendChild(dayCard);
+            }
+        }
+
+        // Renderizar etapas de recompensa
+        function renderRewardStages() {
+            const container = document.getElementById('reward-stages');
+            container.innerHTML = '';
+
+            const daysCompleted = completedDays.size;
+
+            rewardStages.forEach(stage => {
+                const stageDiv = document.createElement('div');
+                stageDiv.className = 'reward-stage';
+
+                if (daysCompleted >= stage.daysRequired) {
+                    stageDiv.classList.add('completed');
+                } else if (daysCompleted >= stage.daysRequired - 5) {
+                    stageDiv.classList.add('active');
+                }
+
+                stageDiv.innerHTML = `
+                    <h4>Etapa ${stage.stage}</h4>
+                    <p>${stage.daysRequired} dias</p>
+                    <div class="bonus">${stage.discount}% OFF</div>
+                    <div class="bonus">R$ ${stage.price.toFixed(2)}</div>
+                    <small>${stage.bonus}</small>
+                `;
+
+                container.appendChild(stageDiv);
+            });
+        }
+
+        // Atualizar gamificação
+        function updateGamification() {
+            const daysCompleted = completedDays.size;
+            const points = daysCompleted * 100;
+
+            // Encontrar preço atual baseado nas etapas
+            let currentPrice = 90;
+            let currentDiscount = 0;
+
+            for (const stage of rewardStages) {
+                if (daysCompleted >= stage.daysRequired) {
+                    currentPrice = stage.price;
+                    currentDiscount = stage.discount;
+                }
+            }
+
+            // Calcular nível
+            const level = Math.floor(daysCompleted / 5) + 1;
+
+            // Atualizar UI
+            document.getElementById('points-earned').textContent = points;
+            document.getElementById('days-completed').textContent = `${daysCompleted}/30`;
+            document.getElementById('current-level').textContent = `Nível ${level}`;
+            document.getElementById('current-price').textContent = `R$ ${currentPrice.toFixed(2)}`;
+            document.getElementById('discount-badge').textContent = `${currentDiscount}% OFF`;
+
+            renderRewardStages();
+        }
+
+        // Abrir modal do dia
+        function openDay(day) {
+            currentDay = day;
+            const data = challengeData[day - 1];
+
+            document.getElementById('modal-title').textContent = `Dia ${day}`;
+
+            let modalBody = `
+                <div class="content-section">
+                    <h3><span class="icon">💡</span> Dica do Dia</h3>
+                    <p>${data.tip}</p>
+                </div>
+
+                <div class="content-section">
+                    <h3><span class="icon">🏋️</span> Exercício do Dia</h3>
+                    <h4>${data.exercise.name}</h4>
+                    <p><strong>Duração:</strong> ${data.exercise.duration}</p>
+                    <p>${data.exercise.description}</p>
+                    ${data.exercise.sets.length > 0 ? `
+                        <p><strong>Séries:</strong></p>
+                        <ul>
+                            ${data.exercise.sets.map(set => `<li>${set.exercise} - ${set.reps}</li>`).join('')}
+                        </ul>
+                    ` : ''}
+                </div>
+
+                <div class="content-section">
+                    <h3><span class="icon">🍽️</span> Receita Saudável</h3>
+                    <h4>${data.recipe.name}</h4>
+                    <p><strong>Ingredientes:</strong></p>
+                    <ul>
+                        ${data.recipe.ingredients.map(ing => `<li>${ing}</li>`).join('')}
+                    </ul>
+                    <p><strong>Modo de Preparo:</strong></p>
+                    <ol>
+                        ${data.recipe.steps.map(step => `<li>${step}</li>`).join('')}
+                    </ol>
+                </div>
+            `;
+
+            document.getElementById('modal-body').innerHTML = modalBody;
+
+            // Atualizar botão
+            const completeBtn = document.getElementById('complete-btn');
+            const continueBtn = document.getElementById('continue-btn');
+
+            if (completedDays.has(day)) {
+                completeBtn.textContent = 'Desmarcar como Concluído';
+                completeBtn.classList.add('completed');
+                continueBtn.style.display = 'block';
+            } else {
+                completeBtn.textContent = 'Marcar como Concluído';
+                completeBtn.classList.remove('completed');
+                continueBtn.style.display = 'none';
+            }
+
+            document.getElementById('modal').classList.add('active');
+        }
+
+        // Fechar modal
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            currentDay = null;
+        }
+
+        // Toggle completar dia
+        function toggleComplete() {
+            if (!currentDay) return;
+
+            if (completedDays.has(currentDay)) {
+                completedDays.delete(currentDay);
+            } else {
+                completedDays.add(currentDay);
+            }
+
+            saveProgress();
+            renderCalendar();
+            updateGamification();
+            openDay(currentDay); // Reabrir para atualizar botões
+        }
+
+        // Continuar para próximo dia
+        function continueToNext() {
+            if (!currentDay) return;
+
+            const nextDay = currentDay + 1;
+            if (nextDay <= 30) {
+                closeModal();
+                setTimeout(() => openDay(nextDay), 300);
+            } else {
+                alert('🎉 Parabéns! Você completou todos os 30 dias! Continue mantendo seus hábitos saudáveis!');
+                closeModal();
+            }
+        }
+
+        // Fechar modal ao clicar fora
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Inicializar ao carregar
+        init();
+    </script>
+</body>
+</html>
