@@ -673,8 +673,6 @@ export default function Home() {
       <HeroSection onStartChallenge={handleStartChallenge} />
 
       <div className="py-12 space-y-12 container mx-auto px-4">
-        <RewardSystem completedDays={completedDays.size} />
-
         <ProgressBar
           completedDays={completedDays.size}
           totalDays={isPremiumUser ? CHALLENGE_DATA.length : FREE_DAYS_LIMIT}
