@@ -525,7 +525,7 @@ const CHALLENGE_DATA = [
   }
 ];
 
-const FREE_DAYS_LIMIT = 3; // Define o limite de dias gratuitos
+const FREE_DAYS_LIMIT = 10; // Define o limite de dias gratuitos
 
 export default function Home() {
   const [showCalendar, setShowCalendar] = useState(false);
@@ -552,9 +552,9 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('completedDays', JSON.stringify(Array.from(completedDays)));
 
-    // Mostrar CTA quando o usuário completar vários dias gratuitos (a partir do dia 3)
+    // Mostrar CTA quando o usuário completar vários dias gratuitos (a partir do dia 7)
     const freeCompletedDays = Array.from(completedDays).filter(day => day <= FREE_DAYS_LIMIT);
-    if (freeCompletedDays.length >= 3 && !isPremiumUser) {
+    if (freeCompletedDays.length >= 7 && !isPremiumUser) {
       setShowUpgradeCTA(true);
     }
   }, [completedDays, isPremiumUser]);
@@ -692,7 +692,7 @@ export default function Home() {
       <div className="py-12 space-y-12 container mx-auto px-4">
         <ProgressBar
           completedDays={completedDays.size}
-          totalDays={10}
+          totalDays={30}
         />
 
         <div id="calendar-section">
