@@ -602,17 +602,17 @@ export default function Home() {
           const StageIcon = newStage.Icon;
           setTimeout(() => {
             toast({
-              title: `🎉 Etapa ${newStage.stage} Desbloqueada!`,
+              title: `Etapa ${newStage.stage} Desbloqueada!`,
               description: (
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <StageIcon className="w-5 h-5 text-green-600" />
                     <span className="font-semibold">{newStage.bonus}</span>
                   </div>
-                  <div className="text-sm">
-                    <div>💰 Novo desconto: {newStage.discount}%</div>
-                    <div>💵 Novo preço: R$ {newStage.price.toFixed(2)}</div>
-                    <div>⭐ Pontos: {calculatePoints(newCount)}</div>
+                  <div className="text-sm space-y-1">
+                    <div>Novo desconto: {newStage.discount}%</div>
+                    <div>Novo preço: R$ {newStage.price.toFixed(2)}</div>
+                    <div>Pontos: {calculatePoints(newCount)}</div>
                   </div>
                 </div>
               ),
