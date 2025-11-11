@@ -9,8 +9,8 @@ export default function ProgressBar({ completedDays, totalDays }: ProgressBarPro
   const percentage = (completedDays / totalDays) * 100;
   
   return (
-    <div className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-sm">
-      <div className="container mx-auto px-4 py-4 max-w-6xl">
+    <div className="sticky top-0 z-50 py-4">
+      <div className="container mx-auto px-4 max-w-6xl">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-sm font-semibold text-foreground">
             Seu Progresso
