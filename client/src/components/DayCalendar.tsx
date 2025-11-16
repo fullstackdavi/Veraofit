@@ -1,7 +1,8 @@
+
 import DayCard from "./DayCard";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Star, TrendingDown, Gift } from "lucide-react";
+import { Trophy, Star, TrendingDown, Gift, Lock } from "lucide-react";
 import { 
   calculatePoints, 
   getCurrentDiscount, 
@@ -13,16 +14,27 @@ import {
 interface DayCalendarProps {
   completedDays: Set<number>;
   onDayClick: (day: number) => void;
-  freeDaysLimit?: number;
+  freeDaysLimit: number;
+  isPremiumUser: boolean;
 }
 
-export default function DayCalendar({ completedDays, onDayClick, freeDaysLimit = 10 }: DayCalendarProps) {
+export default function DayCalendar({ 
+  completedDays, 
+  onDayClick, 
+  freeDaysLimit,
+  isPremiumUser
+}: DayCalendarProps) {
   const days = Array.from({ length: 30 }, (_, i) => i + 1);
   const completedCount = completedDays.size;
   const points = calculatePoints(completedCount);
   const currentDiscount = getCurrentDiscount(completedCount);
   const currentPrice = getCurrentPrice(completedCount);
   const nextStage = getNextRewardStage(completedCount);
+
+  // Função para determinar se um dia está bloqueado
+  const isDayLocked = (day: number): boolean => {
+    return day > freeDaysLimit && !isPremiumUser;
+  };
 
   return (
     <section className="py-16 px-4 bg-muted/30">
@@ -84,14 +96,32 @@ export default function DayCalendar({ completedDays, onDayClick, freeDaysLimit =
           </div>
         </Card>
 
+        {/* Banner informativo sobre dias bloqueados */}
+        {!isPremiumUser && (
+          <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-orange-50 border-2 border-blue-300 rounded-lg">
+            <div className="flex items-center gap-3">
+              <Lock className="w-6 h-6 text-blue-600" />
+              <div>
+                <p className="font-semibold text-gray-800">
+                  Primeiros 10 dias GRÁTIS!
+                </p>
+                <p className="text-sm text-gray-600">
+                  Dias 11-30 estão bloqueados. Desbloqueie o pacote completo para acessar todo o conteúdo.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-3">
           {days.map((day) => {
             const isStageDay = REWARD_STAGES.some(stage => stage.daysRequired === day);
             const stage = REWARD_STAGES.find(s => s.daysRequired === day);
+            const isLocked = isDayLocked(day);
             
             return (
               <div key={day} className="relative">
-                {isStageDay && stage && (
+                {isStageDay && stage && !isLocked && (
                   <Badge 
                     className="absolute -top-2 -right-2 z-10"
                     style={{
@@ -106,7 +136,7 @@ export default function DayCalendar({ completedDays, onDayClick, freeDaysLimit =
                 <DayCard
                   day={day}
                   isCompleted={completedDays.has(day)}
-                  isLocked={day > freeDaysLimit}
+                  isLocked={isLocked}
                   onClick={() => onDayClick(day)}
                 />
               </div>
