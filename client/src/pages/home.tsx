@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import HeroSection from "@/components/HeroSection";
 import ProgressBar from "@/components/ProgressBar";
+import DayCalendar from "@/components/DayCalendar";
 import DayDetailModal from "@/components/DayDetailModal";
 import PaymentSection from "@/components/PaymentSection";
 import UpgradeCallToAction from "@/components/UpgradeCallToAction";
