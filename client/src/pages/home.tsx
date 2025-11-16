@@ -560,15 +560,6 @@ export default function Home() {
     if (freeCompletedDays.length >= 7 && !isPremiumUser) {
       setShowUpgradeCTA(true);
     }
-
-    // Mostrar diálogo de marco para dias 3 e 6
-    if (completedDays.has(3) && !isPremiumUser) {
-      setShowMilestoneDialog(true);
-      setMilestoneDay(3);
-    } else if (completedDays.has(6) && !isPremiumUser) {
-      setShowMilestoneDialog(true);
-      setMilestoneDay(6);
-    }
   }, [completedDays, isPremiumUser]);
 
   const saveProgress = (days: Set<number>) => {
@@ -648,6 +639,16 @@ export default function Home() {
               </div>
             ),
           });
+        }
+
+        // Mostrar MilestoneDialog para dias 3 e 6
+        if (selectedDay === 3 || selectedDay === 6) {
+          // Fechar o modal atual e mostrar o milestone
+          setIsModalOpen(false);
+          setTimeout(() => {
+            setMilestoneDay(selectedDay);
+            setShowMilestoneDialog(true);
+          }, 300);
         }
       }
       return newSet;
