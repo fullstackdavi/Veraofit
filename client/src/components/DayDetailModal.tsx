@@ -32,8 +32,8 @@ interface DayDetailModalProps {
   dayData: DayData;
   isCompleted: boolean;
   onToggleComplete: () => void;
-  isLocked: boolean;
-  onUnlock: () => void;
+  isLocked?: boolean;
+  onUnlock?: () => void;
   onContinue?: () => void;
 }
 
@@ -43,7 +43,7 @@ export default function DayDetailModal({
   dayData,
   isCompleted,
   onToggleComplete,
-  isLocked,
+  isLocked = false,
   onUnlock,
   onContinue,
 }: DayDetailModalProps) {
@@ -53,84 +53,71 @@ export default function DayDetailModal({
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             Dia {dayData.day}
-            {isCompleted && !isLocked && (
+            {isCompleted && (
               <Badge className="bg-chart-3 text-white">
                 <CheckCircle2 className="w-3 h-3 mr-1" />
                 Concluído
               </Badge>
             )}
-            {isLocked && (
-              <Badge className="bg-gray-500 text-white">
-                <Lock className="w-3 h-3 mr-1" />
-                Bloqueado
-              </Badge>
-            )}
           </DialogTitle>
           <DialogDescription>
-            {isLocked 
-              ? "Este conteúdo faz parte do plano premium"
-              : "Siga as orientações do dia para conquistar seus objetivos"
-            }
+            Siga as orientações do dia para conquistar seus objetivos
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6 mt-4">
-          {/* Dica do Dia */}
+          {/* Dica do Dia - Sempre bloqueada para usuários não premium */}
           <div className="bg-accent/30 rounded-lg p-6 relative overflow-hidden">
-            {isLocked && (
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-orange-500/10 backdrop-blur-sm flex items-center justify-center z-10">
-                <div className="text-center">
-                  <Lock className="w-8 h-8 mx-auto mb-2 text-blue-600" />
-                  <p className="text-sm font-semibold text-gray-700">
-                    Este dia faz parte do conteúdo premium
-                  </p>
-                  <Button 
-                    onClick={onUnlock} 
-                    size="sm" 
-                    className="mt-3 bg-gradient-to-r from-blue-600 to-orange-600"
-                  >
-                    Desbloquear Agora
-                  </Button>
-                </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-orange-500/10 backdrop-blur-sm flex items-center justify-center z-10">
+              <div className="text-center">
+                <Lock className="w-8 h-8 mx-auto mb-2 text-blue-600" />
+                <p className="text-sm font-semibold text-gray-700">
+                  Desbloqueie o pacote completo para acessar as dicas do dia
+                </p>
+                <Button 
+                  onClick={onUnlock} 
+                  size="sm" 
+                  className="mt-3 bg-gradient-to-r from-blue-600 to-orange-600"
+                >
+                  Desbloquear Agora
+                </Button>
               </div>
-            )}
-            <div className={cn("flex items-start gap-3 mb-3", isLocked && "blur-sm")}>
+            </div>
+            <div className="flex items-start gap-3 mb-3 blur-sm">
               <div className="bg-primary rounded-full p-2">
                 <Lightbulb className="w-5 h-5 text-primary-foreground" />
               </div>
               <h3 className="text-lg font-semibold text-foreground">Dica do Dia</h3>
             </div>
-            <p className={cn("text-foreground leading-relaxed", isLocked && "blur-sm")}>
+            <p className="text-foreground leading-relaxed blur-sm">
               {dayData.tip}
             </p>
           </div>
 
-          {/* Exercício do Dia */}
+          {/* Exercício do Dia - Sempre bloqueado para usuários não premium */}
           <div className="bg-blue-50/30 rounded-lg p-6 relative overflow-hidden">
-            {isLocked && (
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-orange-500/10 backdrop-blur-sm flex items-center justify-center z-10">
-                <div className="text-center">
-                  <Lock className="w-8 h-8 mx-auto mb-2 text-blue-600" />
-                  <p className="text-sm font-semibold text-gray-700">
-                    Este dia faz parte do conteúdo premium
-                  </p>
-                  <Button 
-                    onClick={onUnlock} 
-                    size="sm" 
-                    className="mt-3 bg-gradient-to-r from-blue-600 to-orange-600"
-                  >
-                    Desbloquear Agora
-                  </Button>
-                </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-orange-500/10 backdrop-blur-sm flex items-center justify-center z-10">
+              <div className="text-center">
+                <Lock className="w-8 h-8 mx-auto mb-2 text-blue-600" />
+                <p className="text-sm font-semibold text-gray-700">
+                  Desbloqueie o pacote completo para acessar o cronograma de exercícios
+                </p>
+                <Button 
+                  onClick={onUnlock} 
+                  size="sm" 
+                  className="mt-3 bg-gradient-to-r from-blue-600 to-orange-600"
+                >
+                  Desbloquear Agora
+                </Button>
               </div>
-            )}
-            <div className={cn("flex items-start gap-3 mb-4", isLocked && "blur-sm")}>
+            </div>
+            <div className="flex items-start gap-3 mb-4 blur-sm">
               <div className="bg-blue-600 rounded-full p-2">
                 <Dumbbell className="w-5 h-5 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-foreground">Exercício do Dia</h3>
             </div>
-            <div className={isLocked ? "blur-sm" : ""}>
+            <div className="blur-sm">
               <h4 className="font-semibold text-foreground mb-2">{dayData.exercise.name}</h4>
               <p className="text-sm text-muted-foreground mb-2">Duração: {dayData.exercise.duration}</p>
               <p className="text-foreground text-sm mb-4">{dayData.exercise.description}</p>
@@ -182,37 +169,21 @@ export default function DayDetailModal({
           </div>
 
           <div className="flex flex-col gap-3 pt-4">
-            {!isLocked && (
-              <div className="flex gap-3">
-                <Button
-                  className="flex-1"
-                  variant={isCompleted ? "outline" : "default"}
-                  onClick={onToggleComplete}
-                  data-testid="button-toggle-complete"
-                >
-                  {isCompleted ? "Desmarcar como Feito" : "Marcar como Feito"}
-                </Button>
-                <Button variant="outline" onClick={onClose} data-testid="button-close">
-                  Fechar
-                </Button>
-              </div>
-            )}
+            <div className="flex gap-3">
+              <Button
+                className="flex-1"
+                variant={isCompleted ? "outline" : "default"}
+                onClick={onToggleComplete}
+                data-testid="button-toggle-complete"
+              >
+                {isCompleted ? "Desmarcar como Feito" : "Marcar como Feito"}
+              </Button>
+              <Button variant="outline" onClick={onClose} data-testid="button-close">
+                Fechar
+              </Button>
+            </div>
             
-            {isLocked && (
-              <div className="flex gap-3">
-                <Button
-                  className="flex-1 bg-gradient-to-r from-blue-600 to-orange-600"
-                  onClick={onUnlock}
-                >
-                  Desbloquear Pacote Completo
-                </Button>
-                <Button variant="outline" onClick={onClose}>
-                  Fechar
-                </Button>
-              </div>
-            )}
-            
-            {isCompleted && !isLocked && onContinue && dayData.day < 30 && (
+            {isCompleted && onContinue && dayData.day < 30 && (
               <Button
                 className="w-full bg-green-600 hover:bg-green-700"
                 onClick={onContinue}
@@ -226,8 +197,4 @@ export default function DayDetailModal({
       </DialogContent>
     </Dialog>
   );
-}
-
-function cn(...classes: (string | boolean | undefined)[]): string {
-  return classes.filter(Boolean).join(' ');
 }

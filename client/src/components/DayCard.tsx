@@ -1,4 +1,3 @@
-
 import { Card } from "@/components/ui/card";
 import { CheckCircle2, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -6,19 +5,19 @@ import { cn } from "@/lib/utils";
 interface DayCardProps {
   day: number;
   isCompleted: boolean;
-  isLocked: boolean;
+  isLocked?: boolean; // Adicionado para indicar se o dia está bloqueado
   onClick: () => void;
 }
 
-export default function DayCard({ day, isCompleted, isLocked, onClick }: DayCardProps) {
+export default function DayCard({ day, isCompleted, isLocked = false, onClick }: DayCardProps) {
   return (
     <div
-      onClick={isLocked ? onClick : onClick}
+      onClick={isLocked ? undefined : onClick}
       className={cn(
         "relative rounded-xl p-6 transition-all duration-300",
         "border-4 backdrop-blur-md",
         isLocked 
-          ? "border-gray-400 cursor-pointer opacity-70 hover:opacity-85" 
+          ? "border-gray-400 cursor-not-allowed opacity-70" 
           : "cursor-pointer hover:shadow-2xl hover:-translate-y-1",
         isCompleted && !isLocked
           ? "border-green-500" 
@@ -28,7 +27,7 @@ export default function DayCard({ day, isCompleted, isLocked, onClick }: DayCard
         backgroundColor: isCompleted && !isLocked 
           ? 'rgba(209, 250, 229, 0.25)' 
           : isLocked 
-          ? 'rgba(229, 231, 235, 0.3)' 
+          ? 'rgba(229, 231, 235, 0.25)' 
           : 'rgba(255, 255, 255, 0.15)',
         boxShadow: isCompleted && !isLocked 
           ? '0 10px 25px rgba(34, 197, 94, 0.2)' 

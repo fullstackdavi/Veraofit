@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import HeroSection from "@/components/HeroSection";
 import ProgressBar from "@/components/ProgressBar";
@@ -526,9 +525,10 @@ const CHALLENGE_DATA = [
   }
 ];
 
-const FREE_DAYS_LIMIT = 10; // Limite de dias gratuitos
+const FREE_DAYS_LIMIT = 10; // Define o limite de dias gratuitos
 
 export default function Home() {
+  const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -542,6 +542,7 @@ export default function Home() {
       setCompletedDays(new Set(JSON.parse(stored)));
     }
 
+    // Verificar se o usuário já comprou o pacote completo
     const premium = localStorage.getItem('isPremiumUser');
     if (premium === 'true') {
       setIsPremiumUser(true);
@@ -550,17 +551,23 @@ export default function Home() {
 
   useEffect(() => {
     localStorage.setItem('completedDays', JSON.stringify(Array.from(completedDays)));
-  }, [completedDays]);
 
-  // Função para verificar se um dia está bloqueado
-  const isDayLocked = (day: number): boolean => {
-    return day > FREE_DAYS_LIMIT && !isPremiumUser;
+    // Mostrar CTA quando o usuário completar vários dias gratuitos (a partir do dia 7)
+    const freeCompletedDays = Array.from(completedDays).filter(day => day <= FREE_DAYS_LIMIT);
+    if (freeCompletedDays.length >= 7 && !isPremiumUser) {
+      setShowUpgradeCTA(true);
+    }
+  }, [completedDays, isPremiumUser]);
+
+  const saveProgress = (days: Set<number>) => {
+    localStorage.setItem('completedDays', JSON.stringify(Array.from(days)));
   };
 
   const handleDayClick = (day: number) => {
-    // Se o dia está bloqueado, mostrar CTA e não abrir modal
-    if (isDayLocked(day)) {
+    // Se o dia está bloqueado e o usuário não é premium, mostrar CTA
+    if (day > FREE_DAYS_LIMIT && !isPremiumUser) {
       setShowUpgradeCTA(true);
+      // Scroll suave para a seção de pagamento
       setTimeout(() => {
         const paymentSection = document.getElementById('payment-section');
         paymentSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -575,7 +582,8 @@ export default function Home() {
   const handleToggleComplete = () => {
     if (selectedDay === null) return;
 
-    if (isDayLocked(selectedDay)) {
+    const freeDaysLimit = isPremiumUser ? CHALLENGE_DATA.length : FREE_DAYS_LIMIT;
+    if (selectedDay > freeDaysLimit && !isPremiumUser) {
       return;
     }
 
@@ -589,12 +597,14 @@ export default function Home() {
         newSet.add(selectedDay);
         const newCount = newSet.size;
 
+        // Check if a new stage was unlocked
         const newStage = checkNewStageUnlocked(previousCount, newCount);
         const points = calculatePoints(newCount);
         const currentDiscount = getCurrentDiscount(newCount);
         const currentPrice = getCurrentPrice(newCount);
 
         if (newStage) {
+          // Show combined notification for stage unlock
           const StageIcon = newStage.Icon;
           toast({
             title: `🏆 Etapa ${newStage.stage} Desbloqueada!`,
@@ -613,6 +623,7 @@ export default function Home() {
             ),
           });
         } else {
+          // Show regular day completion notification
           toast({
             title: `🎉 Dia ${selectedDay} Concluído!`,
             description: (
@@ -635,37 +646,39 @@ export default function Home() {
     if (selectedDay === null) return;
 
     const nextDay = selectedDay + 1;
+    const freeDaysLimit = isPremiumUser ? CHALLENGE_DATA.length : FREE_DAYS_LIMIT;
 
-    if (nextDay <= CHALLENGE_DATA.length) {
-      if (isDayLocked(nextDay)) {
-        setIsModalOpen(false);
-        setShowUpgradeCTA(true);
-        setTimeout(() => {
-          const paymentSection = document.getElementById('payment-section');
-          paymentSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-      } else {
-        setIsModalOpen(false);
-        setTimeout(() => {
-          setSelectedDay(nextDay);
-          setIsModalOpen(true);
-        }, 300);
-      }
+    if (nextDay <= CHALLENGE_DATA.length && nextDay <= freeDaysLimit) {
+      setIsModalOpen(false);
+      setTimeout(() => {
+        setSelectedDay(nextDay);
+        setIsModalOpen(true);
+      }, 300);
+    } else if (nextDay > freeDaysLimit && !isPremiumUser) {
+      setIsModalOpen(false);
+      setShowUpgradeCTA(true);
+      setTimeout(() => {
+        const paymentSection = document.getElementById('payment-section');
+        paymentSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
     }
   };
 
   const handleUpgrade = () => {
+    // Simular a compra e atualizar o estado
     setIsPremiumUser(true);
     localStorage.setItem('isPremiumUser', 'true');
-    setShowUpgradeCTA(false);
+    setShowUpgradeCTA(false); // Ocultar CTA após o upgrade
 
-    toast({
-      title: "🎉 Parabéns!",
-      description: "Você agora tem acesso completo aos 30 dias do desafio!",
-    });
+    // Scroll para a seção de pagamento se ainda não estiver visível
+    const paymentSection = document.getElementById('payment-section');
+    if (paymentSection && !isElementInView(paymentSection)) {
+      paymentSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   };
 
   const handleStartChallenge = () => {
+    // Scroll para o calendário
     const calendar = document.getElementById('calendar-section');
     calendar?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -686,8 +699,7 @@ export default function Home() {
           <DayCalendar
             completedDays={completedDays}
             onDayClick={handleDayClick}
-            freeDaysLimit={FREE_DAYS_LIMIT}
-            isPremiumUser={isPremiumUser}
+            freeDaysLimit={isPremiumUser ? CHALLENGE_DATA.length : FREE_DAYS_LIMIT}
           />
         </div>
 
@@ -707,11 +719,22 @@ export default function Home() {
           dayData={currentDayData}
           isCompleted={completedDays.has(selectedDay!)}
           onToggleComplete={handleToggleComplete}
-          isLocked={isDayLocked(selectedDay!)}
-          onUnlock={handleUpgrade}
+          isLocked={!isPremiumUser}
+          onUnlock={() => handleUpgrade()}
           onContinue={handleContinueToNext}
         />
       )}
     </div>
+  );
+}
+
+// Função auxiliar para verificar se um elemento está visível na tela
+function isElementInView(element: HTMLElement): boolean {
+  const rect = element.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
   );
 }
