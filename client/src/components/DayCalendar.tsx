@@ -61,14 +61,6 @@ export default function DayCalendar({ completedDays, onDayClick, freeDaysLimit =
             </div>
 
             <div className="flex items-center gap-3">
-              <Trophy className="w-8 h-8 text-orange-600" />
-              <div>
-                <div className="text-sm font-medium" style={{ color: '#6b7280' }}>Preço Atual</div>
-                <div className="text-2xl font-bold" style={{ color: '#ea580c' }}>R$ {currentPrice.toFixed(2)}</div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
               <Gift className="w-8 h-8 text-blue-600" />
               <div>
                 <div className="text-sm font-medium" style={{ color: '#6b7280' }}>Próxima Meta</div>
