@@ -650,6 +650,16 @@ export default function Home() {
             setShowMilestoneDialog(true);
           }, 300);
         }
+
+        // Redirecionar para o checkout quando completar o dia 10 (se não for premium)
+        if (selectedDay === 10 && !isPremiumUser) {
+          setIsModalOpen(false);
+          setShowUpgradeCTA(true);
+          setTimeout(() => {
+            const paymentSection = document.getElementById('payment-section');
+            paymentSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 500);
+        }
       }
       return newSet;
     });
