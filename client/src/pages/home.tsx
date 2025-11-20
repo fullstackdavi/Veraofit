@@ -633,8 +633,6 @@ export default function Home() {
               <div className="space-y-2">
                 <div className="text-sm space-y-1">
                   <div>✨ +100 pontos (Total: {points})</div>
-                  <div>💰 Desconto atual: {currentDiscount}%</div>
-                  <div>🏷️ Preço atual: R$ {currentPrice.toFixed(2)}</div>
                 </div>
               </div>
             ),
