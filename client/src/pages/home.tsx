@@ -541,31 +541,19 @@ export default function Home() {
 
   useEffect(() => {
     const stored = localStorage.getItem('completedDays');
-    const premium = localStorage.getItem('isPremiumUser');
-    const isPremium = premium === 'true';
-    
     if (stored) {
-      const storedDays = JSON.parse(stored);
-      // Filtrar dias bloqueados se o usuário não é premium
-      const validDays = isPremium 
-        ? storedDays 
-        : storedDays.filter((day: number) => day <= FREE_DAYS_LIMIT);
-      setCompletedDays(new Set(validDays));
+      setCompletedDays(new Set(JSON.parse(stored)));
     }
 
     // Verificar se o usuário já comprou o pacote completo
-    if (isPremium) {
+    const premium = localStorage.getItem('isPremiumUser');
+    if (premium === 'true') {
       setIsPremiumUser(true);
     }
   }, []);
 
   useEffect(() => {
-    // Filtrar e salvar apenas dias válidos
-    const validDays = isPremiumUser 
-      ? Array.from(completedDays)
-      : Array.from(completedDays).filter(day => day <= FREE_DAYS_LIMIT);
-    
-    localStorage.setItem('completedDays', JSON.stringify(validDays));
+    localStorage.setItem('completedDays', JSON.stringify(Array.from(completedDays)));
 
     // Mostrar CTA quando o usuário completar vários dias gratuitos (a partir do dia 7)
     const freeCompletedDays = Array.from(completedDays).filter(day => day <= FREE_DAYS_LIMIT);
@@ -661,16 +649,6 @@ export default function Home() {
             setMilestoneDay(selectedDay);
             setShowMilestoneDialog(true);
           }, 300);
-        }
-
-        // Redirecionar automaticamente para o checkout quando completar o dia 10
-        if (selectedDay === FREE_DAYS_LIMIT && !isPremiumUser) {
-          setIsModalOpen(false);
-          setShowUpgradeCTA(true);
-          setTimeout(() => {
-            const paymentSection = document.getElementById('payment-section');
-            paymentSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }, 500);
         }
       }
       return newSet;
