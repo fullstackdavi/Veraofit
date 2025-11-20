@@ -678,16 +678,21 @@ export default function Home() {
   };
 
   const handleUpgrade = () => {
+    // Fechar o modal imediatamente
+    setIsModalOpen(false);
+    
     // Simular a compra e atualizar o estado
     setIsPremiumUser(true);
     localStorage.setItem('isPremiumUser', 'true');
     setShowUpgradeCTA(false); // Ocultar CTA após o upgrade
 
-    // Scroll para a seção de pagamento se ainda não estiver visível
-    const paymentSection = document.getElementById('payment-section');
-    if (paymentSection && !isElementInView(paymentSection)) {
-      paymentSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    // Scroll para a seção de pagamento com um pequeno delay para permitir o modal fechar
+    setTimeout(() => {
+      const paymentSection = document.getElementById('payment-section');
+      if (paymentSection) {
+        paymentSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
   };
 
   const handleStartChallenge = () => {
